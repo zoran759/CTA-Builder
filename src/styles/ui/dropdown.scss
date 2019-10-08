@@ -1,0 +1,57 @@
+.cta-dropdown {
+    background-color: $color-white;
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    transform: translateY(100%);
+    border-radius: $input-radius*2;
+    padding: 1rem 0;
+    pointer-events: none;
+    @include shadow($shadow);
+    transition: opacity $transition ease;
+    z-index: 10;
+
+    .cta-dropdown-overlay {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 27, 72, 0.12);
+    }
+
+    &.active {
+      pointer-events: all;
+      opacity: 1;
+    }
+
+    >div {
+      height: 3rem;
+      padding: 0 1.8rem;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: color $transition ease;
+
+      &:hover {
+        color: $color-primary;
+
+        i {
+          color: $color-primary;
+        }
+      }
+      
+      i {
+        font-size: 1.2rem;
+        margin-right: 0.8rem;
+        color: $color-additional;
+
+        &:last-child {
+          margin-right: 0;
+        }
+      }
+      span {
+        margin-right: 0.5rem;
+      }
+    }
+}

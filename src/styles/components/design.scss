@@ -1,0 +1,333 @@
+.cta-design {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+  position: relative;
+
+  .cta-design-edit {
+    position: absolute;
+    right: 0;
+    top: -40px;
+    color: $color-dark-gray;
+    transition: color $transition ease;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    i {
+      margin-left: 0.5rem;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  &.active {
+    display: flex;
+  }
+
+  .cta-optional {
+    opacity: 0.5;
+  }
+
+  .cta-trigger-button-container {
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    width: 100%;
+
+    &.cta-position-br {
+      text-align: right;
+    }
+    &.cta-position-bc {
+      text-align: center;
+    }
+    &.cta-position-bl {
+      text-align: left;
+    }
+  }
+
+  .cta-content-button {
+    font-size: 1rem;
+    border: none;
+    border-radius: $input-radius;
+    cursor: pointer;
+    height: 2.4rem;
+    line-height: calc(2.4rem - 2px);
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid $border-color;
+    margin-bottom: $margin;
+    outline: none;
+    border-radius: $input-radius * 2;
+    text-decoration: none;
+    transition: border $transition ease, color $transition ease, background-color $transition ease;
+
+    &.trigger {
+      display: inline-flex;
+      margin-bottom: 0;
+    }
+
+    &.right {
+      display: inline-flex;
+    }
+
+    &.left {
+      display: inline-flex;
+    }
+
+    &.cta-label-textonly {
+
+      i{
+        display: none;
+      }
+    }
+
+    &.cta-label-texticonl {
+
+      i {
+        margin-left: 0;
+      }
+      
+    }
+
+    &.cta-label-texticonr {
+      flex-direction: row-reverse;
+
+      i {
+        margin-right: 0;
+      }
+    }
+
+    i {
+      font-size: 1.2rem;
+      margin: 0 0.5rem;
+    }
+
+    &:hover {
+      border-color: $color-primary !important;
+    }
+
+    span {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: $color-primary-active;
+      text-decoration: underline;
+      transition: border $transition ease, color $transition ease, background-color $transition ease;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .cta-content {
+    background-color: $color-white;
+    border-radius: $input-radius * 2;
+    padding: $spacer;
+    border: 1px solid transparent;
+    position: relative;
+
+    .cta-content-close {
+      position: absolute;
+      color: $color-light-gray;
+      transition: color $transition ease;
+      display: flex;
+      align-items: center;
+      font-size: 0.8rem;
+      cursor: pointer;
+
+      &.cta-close-tl {
+        left: 1rem;
+        top: 1rem;
+      }
+
+      &.cta-close-tr {
+        right: 1rem;
+        top: 1rem;
+      }
+
+      i {
+        margin-left: 0.5rem;
+      }
+
+      &:hover {
+        color: $color-dark;
+      }
+    }
+
+    .cta-blocks {
+      &.left,
+      &.right {
+        &.full-width {
+          width: calc(100% + #{$spacer * 2});
+          margin-left: -$spacer;
+
+          .full-width {
+            width: 50%;
+            margin-left: 0;
+          }
+        }
+      }
+
+      &.left {
+        display: flex;
+        .cta-block {
+          width: 50%;
+          &:last-child {
+            padding-left: 1rem;
+            padding-right: 0;
+          }
+        }
+      }
+      &.right {
+        display: flex;
+        flex-direction: row-reverse;
+
+        .cta-block {
+          width: 50%;
+          &:last-child {
+            padding-left: 0;
+            padding-right: 1rem;
+          }
+        }
+      }
+    }
+
+    .cta-block {
+      border: 2px dashed $border-color;
+      border-radius: $input-radius * 2;
+      cursor: pointer;
+      transition: border $transition ease, background-color $transition ease;
+      margin-bottom: $spacer/2;
+
+      &:hover {
+        background-color: rgba($color-primary, 0.05);
+        border-color: $color-primary;
+      }
+
+      &.filed {
+        border-color: transparent;
+
+        &:hover {
+          background-color: rgba($color-primary, 0.05);
+          border-color: $color-primary;
+        }
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      &.full-width {
+        width: calc(100% + #{$spacer * 2});
+        margin-left: -$spacer;
+      }
+
+      a {
+        display: inline-block;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $color-dark-gray !important;
+        width: 100%;
+        height: 100%;
+        min-width: 200px;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        font-family: $font-family !important;
+      }
+    }
+
+    .cta-content-logo {
+      &.left {
+        text-align: left;
+      }
+      &.center {
+        text-align: center;
+      }
+      &.right {
+        text-align: right;
+      }
+
+      > div {
+        min-height: 50px;
+      }
+    }
+    .cta-content-image {
+      > div {
+        min-height: 100px;
+      }
+    }
+    .cta-content-text {
+      > div {
+        min-height: 100px;
+      }
+    }
+
+    .cta-content-legal {
+      cursor: pointer;
+      color: $color-dark-gray;
+      border: 2px dashed transparent;
+      border-radius: $input-radius * 2;
+      transition: border $transition ease, background-color $transition ease;
+
+      &.filed {
+        border-color: transparent;
+
+        &:hover {
+          background-color: rgba($color-primary, 0.05);
+          border-color: $color-primary;
+        }
+      }
+
+      .cta-content-unsubscribe {
+        margin-bottom: $margin;
+      }
+
+      .cta-legal-toggler {
+        color: $color-primary-active;
+        text-decoration: underline;
+        cursor: pointer;
+        font-family: $font-family !important;
+        font-size: 1rem !important;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      .cta-content-legal-links {
+        span,
+        a {
+          text-decoration: none;
+          cursor: pointer;
+          margin-right: 1rem;
+          color: inherit;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}

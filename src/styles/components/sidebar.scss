@@ -1,0 +1,24 @@
+.cta-sidebar{
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: $color-light;
+  width: $sidebar-width;
+  height: 100%;
+  padding: $spacer;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  z-index: 2;
+  opacity: 0;
+
+  &.active{
+    transition: opacity $transition ease;
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 991px) {
+    width: $sidebar-width-mobile;
+    padding: 2em 0;
+  }
+}

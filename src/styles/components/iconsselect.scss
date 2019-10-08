@@ -1,0 +1,134 @@
+.cta-icons-select {
+  width: 34px;
+  height: 34px;
+  position: relative;
+
+  .cta-icons-toggler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $input-lineheight;
+    height: $input-lineheight;
+    border-radius: $input-radius;
+    border: 1px solid $border-color;
+    cursor: pointer;
+    transition: all $transition ease;
+    font-size: 1.2rem;
+
+    &:hover,
+    &.active {
+      border-color: $color-light-gray;
+    }
+  }
+
+  .cta-icons-search {
+    position: relative;
+    margin-bottom: $margin/2;
+
+    .cta-icons-search {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 10px;
+      color: $color-additional;
+      transition: color $transition ease;
+    }
+
+    .cta-icons-clear {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+      font-size: 0.6rem;
+      opacity: 0;
+      color: $color-additional;
+      transition: all $transition ease;
+      cursor: pointer;
+
+      &:hover {
+        color: $color-dark;
+      }
+
+      &.active {
+        opacity: 1;
+      }
+    }
+
+    input {
+      padding-left: 40px;
+      padding-right: 40px;
+      margin-bottom: 0;
+    }
+
+    &.active {
+      .cta-icons-search {
+        color: $color-dark;
+      }
+    }
+  }
+
+  .cta-icons-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-height: 20vh;
+    overflow-y: auto;
+    font-size: 1.2rem;
+
+    i {
+      width: $input-lineheight * 1.3;
+      height: $input-lineheight * 1.3;
+      border-radius: $input-radius;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all $transition ease;
+
+      &:hover,
+      &.active {
+        background-color: rgba($color-light-hover, 0.5);
+      }
+    }
+  }
+
+  .cta-icons-dropdown {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    width: calc(#{$edittab-width} - #{$spacer * 2});
+    background-color: $color-white;
+    transform: translateY(calc(100% + 10px));
+    border-radius: $input-radius * 2;
+    padding: $spacer/2;
+    z-index: 11;
+    @include shadow($shadow);
+    transition: all $transition ease;
+  }
+
+  &.active {
+    .cta-icons-dropdown {
+      pointer-events: all;
+      opacity: 1;
+    }
+
+    .cta-icons-toggler {
+      border-color: $color-light-gray;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .cta-icons-dropdown {
+      width: calc(#{$edittab-width-mobile} - #{$spacer * 2});
+    }
+  }
+
+  @media screen and (max-width:560px) {
+    .cta-icons-dropdown {
+      width: calc(100vw - 2rem);
+      padding: 1rem;
+    }
+  }
+}

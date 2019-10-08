@@ -1,0 +1,57 @@
+.cta-layout-choose {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  background-color: $color-light;
+
+  >div {
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    padding: 10vh 2em;
+    border-right: 1px solid $border-color;
+    transition: background-color $transition ease;
+
+    &:hover{
+      background-color: $color-light-hover;
+    }
+
+    &:last-child{
+      border: none;
+
+      img {
+        margin-top: 2rem;
+      }
+    }
+
+    p {
+      margin: 0 !important;
+    }
+  }
+
+  .cta-layout-choose-img {
+    height: 20vh;
+  }
+
+  @media screen and (max-height: 800px) {
+    .cta-layout-choose-img {
+      height: 30vh;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    flex-direction: column; 
+
+    .cta-layout-choose-img {
+      height: auto;
+    }
+
+    >div {
+      border: none;
+      border-bottom: 1px solid $color-gray;
+      padding-top: 5vh;
+      padding-bottom: 5vh; 
+    }
+  }
+  
+}

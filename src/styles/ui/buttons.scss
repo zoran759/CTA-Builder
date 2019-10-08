@@ -1,0 +1,185 @@
+.btn {
+  font-size: 1rem;
+  border: none;
+  border-radius: $input-radius;
+  cursor: pointer;
+  line-height: calc(#{$input-lineheight} - 2px);
+  border: 1px solid $color-primary;
+  padding: 0 1em;
+  outline: none;
+  text-decoration: none;
+  transition: border $transition ease, color $transition ease, background-color $transition ease;
+
+  &.btn-primary {
+    background-color: $color-primary;
+    color: $color-white;
+
+    &:active {
+      background-color: $color-primary-active;
+      color: $color-white;
+    }
+  }
+
+  &.btn-outline-primary {
+    background-color: transparent;
+    color: $color-primary;
+
+    &:hover {
+      background-color: $color-primary;
+      color: $color-white;
+    }
+  }
+
+  &.btn-secondary {
+    background-color: transparent;
+    border-color: transparent;
+    color: $color-dark-gray;
+
+    &:hover {
+      border-color: $color-lgray;
+      background-color: $color-lgray;
+    }
+  }
+
+  &.cta-toggler {
+    padding: 0;
+  }
+
+  &.btn-rounded {
+    border-radius: 25px;
+    border-color: $color-gray-additional;
+    color: $color-dark;
+    line-height: 38px;
+
+    i {
+      color: $color-dark-gray;
+    }
+
+    &:hover {
+      border-color: $color-lgray;
+      background-color: $color-lgray;
+    }
+  }
+
+  &.btn-transparent {
+    background-color: transparent;
+    border-color: transparent;
+    color: $color-dark-gray;
+
+    &:hover {
+      border-color: transparent;
+      background-color: transparent;
+      color: $color-primary;
+    }
+  }
+
+  &.btn-special {
+    background-color: $color-white;
+    border-color: transparent;
+    color: $color-dark-gray;
+    border-radius: $input-radius*2;
+    white-space: nowrap;
+    @include shadow(0px 8px 12px rgba(0, 27, 72, 0.04));
+
+    &:hover {
+      border-color: $color-white;
+      background-color:  $color-white;
+      color: $color-primary;
+    }
+  }
+}
+
+.cta-btn-icon {
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $input-radius;
+  border: 1px solid transparent;
+  color: $color-dark-gray;
+  transition: all $transition ease;
+
+  &.active {
+    border-color: $color-gray;
+    color: $color-dark;
+  }
+
+  &:hover{
+    color: $color-dark;
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.cta-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &.in-tab {
+    padding: 0 $spacer;
+    height: 2.4rem;
+    line-height: 1rem;
+    justify-content: flex-start;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: $margin;
+
+    .cta-link {
+      align-items: flex-start;
+
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
+
+  .cta-link {
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    margin: 0 $spacer/2;
+    align-items: center;
+    white-space: nowrap;
+    opacity: 0.5;
+    font-weight: 600;
+    transition: opacity $transition ease;
+    position: relative;
+  
+    &::after{
+      content: '';
+      width: 100%;
+      height: 2px;
+      background-color: $color-dark;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all $transition ease;
+    }
+  
+    &:hover,
+    &.active {
+      opacity: 1;
+    }
+  
+    &.active {
+      &::after{
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+.btn-icons {
+  .cta-btn-icon {
+    margin-right: 0.5rem;
+  }
+}

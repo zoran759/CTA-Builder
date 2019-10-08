@@ -1,0 +1,91 @@
+.cta-edittab{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $edittab-width;
+  height: 100%;
+  padding: 2em 0;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-white;
+  z-index: 2;
+  transform: translateX(100%);
+  transition: transform $transition ease;
+
+  .cta-tab-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+    width: 100%;
+  }
+
+  .cta-group {
+    width: 100%;
+    padding: 0 $spacer;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    border-bottom: 1px solid $border-color;
+    margin-bottom: $margin;
+  }
+  
+  .cta-tab {
+    width: calc(100% + #{$spacer} + 12px);
+    margin-left: -$spacer/2;
+    padding: 0 $spacer/2;
+    display: none;
+    height: 100%;
+    overflow-y: scroll;
+  
+    &.active {
+      display: block;
+    }
+  }
+
+  .cta-content-for-radio {
+    padding-left: 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height $transition ease;
+
+    &.active {
+      max-height: 250px;
+    }
+  }
+
+  &.active{
+    transform: translateX(0);
+  }
+
+  @media screen and (max-width: 991px) {
+    width: $edittab-width-mobile;
+    padding: 2em 0;
+  }
+
+  @media screen and (max-width: 560px) {
+    width: 100%;
+    padding: 1rem 0;
+
+    .cta-group-title {
+
+      h2 {
+        padding: 0 1rem;
+      }
+    }
+
+    .cta-group {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .cta-tab {
+      width: calc(100% + 2rem + 12px);
+      margin-left: -1rem;
+      padding: 0 1rem;
+    }
+  }
+}
