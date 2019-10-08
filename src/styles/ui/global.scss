@@ -45,6 +45,9 @@ body {
 .mb-d {
   margin-bottom: $margin !important;
 }
+.pt-d {
+  padding-top: $spacer !important;
+}
 .d-flex {
   display: flex;
 
@@ -76,7 +79,7 @@ body {
 }
 
 .d-none {
-  display: none;
+  display: none !important;
 }
 
 .show-mobile {

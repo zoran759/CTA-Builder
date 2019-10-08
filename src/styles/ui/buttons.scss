@@ -87,6 +87,12 @@
       color: $color-primary;
     }
   }
+
+  @media screen and (max-width: $mobile) {
+    &.cta-toggler {
+      padding: 1rem;
+    }
+  }
 }
 
 .cta-btn-icon {

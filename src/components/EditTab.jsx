@@ -6,10 +6,11 @@ class EditTab extends Component {
   }
 
   render() {
-    const { isActive, content } = this.props;
+    const { isActive, content, onClose } = this.props;
 
     return (
       <div className={`cta-edittab ${isActive ? 'active' : ''}`}>
+        <div className="cta-edit-tab-close" onClick={onClose}><i className="icon-close"></i></div>
         {content}
       </div>
     );

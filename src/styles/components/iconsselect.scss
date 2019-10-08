@@ -119,6 +119,12 @@
     }
   }
 
+  @media screen and (max-width: 1600px) {
+    .cta-icons-dropdown {
+      width: calc(#{$edittab-width-md} - #{$spacer * 2});
+    }
+  }
+
   @media screen and (max-width: 991px) {
     .cta-icons-dropdown {
       width: calc(#{$edittab-width-mobile} - #{$spacer * 2});

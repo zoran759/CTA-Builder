@@ -37,7 +37,7 @@ class Header extends Component {
 
   render() {
     const { isOpenMainMenu } = this.state;
-    const { view, layoutName, onViewChange, onLayoutToggler } = this.props;
+    const { isDesign, layoutName, onViewChange, onLayoutToggler } = this.props;
 
     return (
       <div className="cta-header">
@@ -58,8 +58,8 @@ class Header extends Component {
           </div>
         </div>
         <div className="cta-header-view cta-links">
-          <div className={`cta-link ${view == "design" ? 'active' : ''}`} onClick={()=>{onViewChange("design")}}>Design</div>
-          <div className={`cta-link ${view == "preview" ? 'active' : ''}`}  onClick={()=>{onViewChange("preview")}}>Preview</div>
+          <div className={`cta-link ${isDesign ? 'active' : ''}`} onClick={()=>{onViewChange(true)}}>Design</div>
+          <div className={`cta-link ${!isDesign ? 'active' : ''}`}  onClick={()=>{onViewChange(false)}}>Preview</div>
         </div>
         <div className="cta-header-button">
           <button className="btn btn-special">Export <span className="hide-mobile">& embed</span></button>

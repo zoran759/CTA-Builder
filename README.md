@@ -1,2 +1,5 @@
-# react_webpack_babel_sass
+# CTA-Builder-v2
+
+# npm start - Development
+# npm run build - Production
 

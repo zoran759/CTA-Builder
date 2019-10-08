@@ -15,6 +15,23 @@
   transform: translateX(100%);
   transition: transform $transition ease;
 
+  .cta-edit-tab-close {
+    align-items: center;
+    position: absolute;
+    right: $spacer;
+    top: $spacer;
+    font-size: 0.7rem;
+    height: 1.4rem;
+    cursor: pointer;
+    color: $color-light-gray;
+    transition: color $transition ease;
+    display: none;
+
+    &:hover{
+      color: $color-dark;
+    }
+  }
+
   .cta-tab-content {
     display: flex;
     flex-direction: column;
@@ -61,6 +78,16 @@
     transform: translateX(0);
   }
 
+  @media screen and (max-width: 1600px) {
+    width: $edittab-width-md;
+  }
+
+  @media screen and (max-width: $lg) {
+    .cta-edit-tab-close {
+      display: flex;
+    }
+  }
+
   @media screen and (max-width: 991px) {
     width: $edittab-width-mobile;
     padding: 2em 0;
@@ -69,6 +96,11 @@
   @media screen and (max-width: 560px) {
     width: 100%;
     padding: 1rem 0;
+
+    .cta-edit-tab-close {
+      right: 1rem;
+      top: 1rem;
+    }
 
     .cta-group-title {
 

@@ -61,6 +61,7 @@
     padding: 0 1em;
     display: flex;
     align-items: center;
+    white-space: nowrap;
     justify-content: center;
     text-align: center;
     border: 1px solid $border-color;
@@ -132,12 +133,67 @@
     }
   }
 
+  .cta-content-container {
+    position: absolute;
+    min-width: 260px;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    &.cta-position-bc {
+      top: auto !important;
+      right: auto !important;
+      left: 50% !important;
+      transform: translateX(-50%) translateY(0) !important;
+      bottom: 0;
+    }
+
+    &.cta-position-br {
+      top: auto !important;
+      left: auto !important;
+      right: calc(10% + 11px);
+      transform: translateX(0) translateY(0) !important;
+      bottom: 0;
+    }
+
+    &.cta-position-bl {
+      top: auto !important;
+      right: auto !important;
+      left: calc(10% + 11px);
+      transform: translateX(0) translateY(0) !important;
+      bottom: 0;
+    }
+
+    &.mobile {
+      transform: translateY(-30px) !important;
+
+      &.cta-position-bc {
+        transform: translateX(-50%) translateY(-30px) !important;
+      }
+  
+      &.cta-position-br {
+        right: 1rem !important;
+      }
+  
+      &.cta-position-bl {
+        left: 1rem !important;
+      }
+
+      .cta-content {
+        width: 100% !important;
+      }
+    }
+  }
+
   .cta-content {
+    max-width: calc(100vw - 4rem);
     background-color: $color-white;
     border-radius: $input-radius * 2;
     padding: $spacer;
     border: 1px solid transparent;
     position: relative;
+    overflow: hidden;
 
     .cta-content-close {
       position: absolute;
@@ -329,5 +385,70 @@
         }
       }
     }
+  }
+
+  &.preview{
+    .cta-content {
+
+      &.without-logo{
+        padding-top: 0;
+
+        .cta-content-close {
+          color: $color-white;
+          transition: opacity $transition ease;
+  
+          &:hover{
+            opacity: 0.5;
+          }
+        }
+      }
+      .cta-block {
+        border: none;
+        border-radius: 0;
+        cursor:auto;
+        display: none;
+
+        &.filed {
+          display: block;
+        }
+
+        &:hover{
+          background-color: transparent;
+        }
+      }
+
+      .cta-content-legal {
+        border: none;
+        cursor:auto;
+
+        .cta-legal-toggler {
+          text-decoration: none !important;
+          color: $color-danger;
+        }
+
+        &.filed {
+          display: block;
+          border-color: transparent;
+  
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+          }
+        }
+      }
+    }
+    .cta-content-button {
+      span {
+        color: $color-danger;
+        text-decoration: none;
+      }
+      &:hover{
+        border-color: transparent !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile) {
+    padding: 0 1rem;
   }
 }

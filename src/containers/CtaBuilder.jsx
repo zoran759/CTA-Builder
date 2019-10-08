@@ -22,6 +22,7 @@ class CtaBuilder extends Component {
     this.state = {
       isLayoutChoose: false,
       isMinimal: false,
+      isSidebar: true,
       tabs: {
         isCallToActionTab: false,
         isComplianceTab: false,
@@ -32,9 +33,7 @@ class CtaBuilder extends Component {
         isTriggerButtonTab: false,
       },
       isDesign: true,
-      isPreview: false,
       layout: null,
-      view: "design",
       layoutName: LAYOUT_NAMES[0],
       fontsList: [],
       behavior: {
@@ -42,7 +41,7 @@ class CtaBuilder extends Component {
         displayOnMobile: true,
         position: "cta-position-br",
         bottom: 32,
-        left: 32, 
+        left: 32,
         right: 32,
         autoOpen: false,
         delay: 1000,
@@ -77,7 +76,7 @@ class CtaBuilder extends Component {
         position: 'cta-boxed',
         color: '#333333',
         colorA: '#75849C',
-        stroke: '#FFFFFF',
+        stroke: '',
         background: '#FFFFFF',
         corner: 8,
         shadow: '0px 16px 64px rgba(0,0,0,0.08)',
@@ -116,7 +115,7 @@ class CtaBuilder extends Component {
         triggerButtonBackground: "transparent",
         triggerButtonLabel: "",
         triggerButtonType: "cta-label-textonly",
-        triggerButtonIcon: "pack-type"
+        triggerButtonIcon: ""
       }
     };
   }
@@ -132,18 +131,20 @@ class CtaBuilder extends Component {
 
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.removeEventListener("keydown", this.onEscape, false);
   }
 
   onEscape = (e) => {
-    const {tabs} = this.state;
-
-    if(e.keyCode === 27) {
-      for (let i in tabs) { tabs[i] = false; }
+    if (e.keyCode === 27) {
+      this.onCloseTabs();
     }
+  }
 
-    this.setState({tabs});
+  onCloseTabs = () => {
+    const { tabs } = this.state;
+    for (let i in tabs) { tabs[i] = false; }
+    this.setState({ tabs });
   }
 
   buildFontList = () => {
@@ -186,8 +187,9 @@ class CtaBuilder extends Component {
     this.setState({ layout: layout, layoutName: LAYOUT_NAMES[layout], isLayoutChoose: false, isMinimal: layout == 2 ? true : false });
   }
 
-  onViewChange = (view) => {
-    this.setState({ view: view });
+  onViewChange = (is) => {
+    this.onCloseTabs();
+    this.setState({ isDesign: is });
   }
 
   onLayoutToggler = () => {
@@ -212,64 +214,80 @@ class CtaBuilder extends Component {
     this.setState({ tabs });
   }
 
+  onCloseSidebar = () => {
+    this.setState({ isSidebar: false });
+  }
+
+  onShowSidebar = () => {
+    this.setState({ isSidebar: true });
+  }
+
   render() {
     const {
       isLayoutChoose,
       isDesign,
-      view,
       layoutName,
       tabs,
-      isPreview,
       fontsList,
       data,
       isMinimal,
-      behavior
+      behavior,
+      isSidebar
     } = this.state;
 
     return (
       <div className="cta-builder">
-        <Header view={view} layoutName={layoutName} onLayoutToggler={this.onLayoutToggler} onViewChange={this.onViewChange} />
+        <Header isDesign={isDesign} layoutName={layoutName} onLayoutToggler={this.onLayoutToggler} onViewChange={this.onViewChange} />
         <div className="cta-view">
-          <Sidebar behavior={behavior} onUpdate={this.onBehaviorUpdate} isMinimal={isMinimal} isActive={(layoutName == LAYOUT_NAMES[1] || layoutName == LAYOUT_NAMES[2])} />
-          <Design  behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
-          <Preview data={data} isActive={isPreview} />
-          <EditTab isActive={tabs.isCallToActionTab} content={
+          <Sidebar
+            onClose={this.onCloseSidebar}
+            onShow={this.onShowSidebar}
+            behavior={behavior}
+            onUpdate={this.onBehaviorUpdate}
+            isMinimal={isMinimal}
+            isActive={(layoutName == LAYOUT_NAMES[1] || layoutName == LAYOUT_NAMES[2])}
+            isSidebar={isSidebar}
+            isDesign={isDesign}
+          />
+          <Design behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
+          <Preview behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab
               data={data}
               fontsList={fontsList}
               onFontchange={this.onFontchange}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isComplianceTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isComplianceTab} content={
             <ComplianceTab
               data={data}
               fontsList={fontsList}
               onFontchange={this.onFontchange}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isBackgroundTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isBackgroundTab} content={
             <BackgroundTab
               data={data}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isLogoTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isLogoTab} content={
             <LogoTab
               data={data}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isFeaturedImageTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isFeaturedImageTab} content={
             <FeaturedImageTab
               data={data}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isMainButtonTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isMainButtonTab} content={
             <MainButtonTab
               data={data}
               fontsList={fontsList}
               onFontchange={this.onFontchange}
               onUpdate={this.onUpdate} />
           } />
-          <EditTab isActive={tabs.isTriggerButtonTab} content={
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isTriggerButtonTab} content={
             <TriggerButtonTab
               data={data}
               fontsList={fontsList}

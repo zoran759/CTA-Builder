@@ -69,12 +69,28 @@
 
   }
 
-  @media screen and (max-width:560px) {
+  @media screen and (max-width: $mobile) {
 
     height: $nav-height-mobile;
 
+    >div {
+      padding: 0;
+    }
+
+    .cta-link {
+      margin: 0 0.5rem;
+    }
+
+    .cta-layout-toggler-img img {
+      margin-top: 0.5rem;
+    }
+
     .cta-header-menu {
       padding: 0;
+    }
+
+    .cta-header-button {
+      padding-right: 1rem;
     }
 
     .btn-special {

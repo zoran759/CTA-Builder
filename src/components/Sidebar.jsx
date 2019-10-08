@@ -22,10 +22,12 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { isActive, behavior, onUpdate, isMinimal } = this.props;
+    const { isActive, isSidebar, behavior, onUpdate, isMinimal, onClose, onShow, isDesign } = this.props;
 
     return (
-      <div className={`cta-sidebar ${isActive ? 'active' : ''}`}>
+      <div className={`cta-sidebar ${(isActive && isDesign) ? 'active' : ''} ${isSidebar ? 'm-active' : 'm-hided'}`}>
+        <div className="cta-sidebar-close" onClick={onClose}><i className="icon-close"></i></div>
+        <div className="cta-sidebar-toggler" onClick={onShow}><i className="icon-settings"></i></div>
         <div className={`mb-d ${isMinimal ? "d-none": ''}`}>
           <label>Display on</label>
           <label className="checkbox text-default">

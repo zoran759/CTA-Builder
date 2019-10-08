@@ -7,11 +7,13 @@ $color-dark-gray: rgba(0, 27, 72, 0.54);
 $color-light-gray: rgba(0, 27, 72, 0.31);
 $color-extra-light: rgba(0, 0, 0, 0.15);
 $color-overlay: rgba(0, 14, 36, 0.35);
+$color-lagray:  rgba(0, 27, 72, 0.25);
+$color-agray:  rgba(0, 27, 72, 0.18);
 $color-gray-additional: #E9E9E9;
 $color-primary: #2399F0;
 $color-primary-active: #006CBF;
 $color-white: #ffffff;
-$color-danger: #ff0f0f;
+$color-danger: #E63655;
 $warning-cover: #FFE589;
 
 $primary: $color-primary;
@@ -28,12 +30,13 @@ $sidebar-width: 260px;
 $sidebar-width-mobile: 260px;
 
 $edittab-width: 410px;
+$edittab-width-md: 340px;
 $edittab-width-mobile: 300px;
 
 $generator-width: 29%;
 $preview-width: 65%;
 
-$spacer: 2vw;
+$spacer: 2rem;
 $margin: 1.8em;
 
 $transition: 300ms;
@@ -53,3 +56,7 @@ $border-color: $color-gray;
 $tooltip-color: #6F7E96;
 
 $shadow: 0px 20px 24px rgba(0, 27, 72, 0.12);
+
+$lg: 1280px;
+$mobile: 560px;
+$md: 991px;
