@@ -210,3 +210,11 @@
     }
   }
 }
+
+.cta-design {
+  &.preview{
+    .cta-trigger-button-container {
+      bottom: 0;
+    }
+  }
+}

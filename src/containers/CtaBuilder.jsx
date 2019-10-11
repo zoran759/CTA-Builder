@@ -128,7 +128,6 @@ class CtaBuilder extends Component {
     setTimeout(() => {
       document.querySelector("#loader").style.display = "none";
     }, 1000)
-
   }
 
   componentWillUnmount() {
@@ -202,7 +201,6 @@ class CtaBuilder extends Component {
   }
 
   onUpdate = (data) => {
-    console.log(data);
     this.setState({ data });
   }
 
@@ -250,7 +248,7 @@ class CtaBuilder extends Component {
             isDesign={isDesign}
           />
           <Design behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
-          <Preview behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
+          <Preview isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab
               data={data}

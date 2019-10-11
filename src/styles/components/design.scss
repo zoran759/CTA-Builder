@@ -36,8 +36,8 @@
 
   .cta-trigger-button-container {
     position: absolute;
-    bottom: -60px;
     left: 0;
+    bottom: -60px;
     width: 100%;
 
     &.cta-position-br {
@@ -70,6 +70,11 @@
     border-radius: $input-radius * 2;
     text-decoration: none;
     transition: border $transition ease, color $transition ease, background-color $transition ease;
+
+    &.disabled {
+      pointer-events: none;
+      user-select: none;
+    }
 
     &.trigger {
       display: inline-flex;
@@ -194,6 +199,15 @@
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity $transition ease;
+
+    &.active{
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .cta-content-close {
       position: absolute;
