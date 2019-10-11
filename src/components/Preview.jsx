@@ -146,7 +146,7 @@ class Preview extends Component {
             } : {}}
           >
             <div
-              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''} ${!data.logo && data.image ? "without-logo" : ''}`}
+              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''} ${(!data.logo || data.logo == "http://" || data.logo == "https://") && data.image ? "without-logo" : ''}`}
               style={{
                 width: data.width + "px",
                 background: data.background,
@@ -156,7 +156,7 @@ class Preview extends Component {
                 boxShadow: data.shadow
               }}
             >
-              <div className={`cta-content-close ${data.closePosition}`} onClick={this.onClose}><i className="icon-close"></i></div>
+              <div className={`cta-content-close ${this.ifOnlyImage() ? "d-none" : ''} ${data.closePosition}`} onClick={this.onClose}><i className="icon-close"></i></div>
               <div className={`cta-block cta-content-logo ${data.logo && data.logo != "http://" && data.logo != "https://" ? "filed" : ''} ${data.logoAlign} ${data.logoStyle}`}>
                 {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank" href={data.hyperlink ? data.hyperlink : "#"}><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
               </div>
@@ -207,8 +207,8 @@ class Preview extends Component {
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
                 <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
-                <div data-tip="Buttons disabled in preview" data-for='dropdown'><span>Remind me later</span></div>
-                <div data-tip="Buttons disabled in preview" data-for='dropdown'><span>Don’t show this again</span></div>
+                <div className="cta-dropdown-link" data-tip="Buttons disabled in preview" data-for='dropdown'><span>Remind me later</span></div>
+                <div className="cta-dropdown-link" data-tip="Buttons disabled in preview" data-for='dropdown'><span>Don’t show this again</span></div>
               </DropDown>
               {
                 !this.ifOnlyImage() ?

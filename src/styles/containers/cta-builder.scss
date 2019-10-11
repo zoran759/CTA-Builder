@@ -223,6 +223,17 @@
     color: $color-dark;
     font-weight: 400;
   }
+
+  .cta-socials-share {
+    text-align: center;
+
+    p{
+      max-width: 200px;
+      margin: 0 auto;
+      margin-bottom: 1rem;
+      color: $color-dark-gray;
+    }
+  }
 }
 
 .pcr-app {

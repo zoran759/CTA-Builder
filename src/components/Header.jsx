@@ -18,21 +18,21 @@ class Header extends Component {
   }
 
   onCloseMenu = () => {
-    this.setState({isOpenMainMenu:false});
+    this.setState({ isOpenMainMenu: false });
   }
 
   render() {
     const { isOpenMainMenu } = this.state;
-    const { isDesign, layoutName, onViewChange, onLayoutToggler } = this.props;
+    const { isDesign, layoutName, onViewChange, onLayoutToggler, onSocialToggle, onExportToggle } = this.props;
 
     return (
       <div className="cta-header">
         <div className="cta-header-menu">
           <button className="btn btn-transparent cta-toggler cta-dropdown-toggler" onClick={this.onMainToggler}><i className="icon-menu"></i></button>
           <DropDown isOpen={isOpenMainMenu} onClose={this.onCloseMenu}>
-            <div><i className="icon-help-circle"></i><span>Self-help center</span><i className="icon-new-window op05 ml-1"></i></div>
-            <div><i className="icon-share"></i><span>Share this app</span></div>
-            <div><i className="icon-sidebar"></i><span>Exit</span></div>
+            <div className="cta-dropdown-link"><i className="icon-help-circle"></i><span>Self-help center</span><i className="icon-new-window op05 ml-1"></i></div>
+            <div className="cta-dropdown-link" onClick={()=>{onSocialToggle()}}><i className="icon-share"></i><span>Share this app</span></div>
+            <div className="cta-dropdown-link"><i className="icon-sidebar"></i><span>Exit</span></div>
           </DropDown>
           <div className="cta-layout-toggler" onClick={onLayoutToggler}>
             <div className="cta-layout-toggler-img show-mobile">
@@ -44,11 +44,11 @@ class Header extends Component {
           </div>
         </div>
         <div className="cta-header-view cta-links">
-          <div className={`cta-link ${isDesign ? 'active' : ''}`} onClick={()=>{onViewChange(true)}}>Design</div>
-          <div className={`cta-link ${!isDesign ? 'active' : ''}`}  onClick={()=>{onViewChange(false)}}>Preview</div>
+          <div className={`cta-link ${isDesign ? 'active' : ''}`} onClick={() => { onViewChange(true) }}>Design</div>
+          <div className={`cta-link ${!isDesign ? 'active' : ''}`} onClick={() => { onViewChange(false) }}>Preview</div>
         </div>
         <div className="cta-header-button">
-          <button className="btn btn-special">Export <span className="hide-mobile">& embed</span></button>
+          <button className="btn btn-special" onClick={()=>{onExportToggle()}}>Export <span className="hide-mobile">& embed</span></button>
         </div>
       </div>
     );

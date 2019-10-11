@@ -41,7 +41,7 @@ class Design extends Component {
             Card styling <i className="icon-card-style"></i>
           </div>
           <div className={`cta-content active ${this.ifTriggerButton() ? "d-none" : ''}`} style={{ width: data.width + "px", background: data.background, border: data.stroke ? data.stroke : "none", borderRadius: data.corner + "px", borderColor: data.stroke, boxShadow: data.shadow }}>
-            <div className={`cta-content-close ${data.closePosition}`}><i className="icon-close"></i></div>
+            <div className={`cta-content-close ${this.ifOnlyImage() ? "d-none" : ''} ${data.closePosition}`}><i className="icon-close"></i></div>
             <div className={`cta-block cta-content-logo ${data.logo && data.logo != "http://" && data.logo != "https://" ? "filed" : ''} ${data.logoAlign} ${data.logoStyle}`} onClick={() => { this.navigateToTab("isLogoTab") }}>
               {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank" href={data.hyperlink ? data.hyperlink : "#"}><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
             </div>

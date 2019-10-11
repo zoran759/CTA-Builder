@@ -9,7 +9,7 @@
   pointer-events: none;
   @include shadow($shadow);
   transition: opacity $transition ease;
-  z-index: 10;
+  z-index: 12;
 
   .cta-btn-close {
     position: absolute;
@@ -48,7 +48,7 @@
     opacity: 1;
   }
 
-  > div {
+  > .cta-dropdown-link {
     height: 3rem;
     padding: 0 1.8rem;
     display: flex;

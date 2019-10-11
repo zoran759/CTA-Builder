@@ -1,7 +1,7 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 
-class Modal extends Component{
-  constructor(props){
+class Modal extends Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -9,14 +9,17 @@ class Modal extends Component{
     };
   }
 
-  render(){
-    const {mtype} = this.state;
-    const { content, isOpen, onClose, type, overlayClose } = this.props;
+  render() {
+    const { mtype } = this.state;
+    const { content, isOpen, onClose, type, overlayClose, close } = this.props;
 
-    return(
+    return (
       <div className={`cta-modal ${type ? type : mtype} ${isOpen ? 'active' : ''}`} >
         <div className="cta-modal-overlay" onClick={overlayClose ? onClose : ''}></div>
-        <div className="cta-modal-content">{content}</div>
+        <div className="cta-modal-content">
+          {close ? <div className="cta-modal-close" onClick={onClose}><i className="icon-close"></i></div> : ''}
+          {content}
+        </div>
       </div>
     );
   }

@@ -13,7 +13,10 @@ import LogoTab from "../components/LogoTab";
 import FeaturedImageTab from "../components/FeaturedImageTab";
 import MainButtonTab from "../components/MainButtonTab";
 import TriggerButtonTab from "../components/TriggerButtonTab";
-import { LAYOUT_NAMES } from "../defines"
+import SocialShare from "../components/SocialShare";
+import ExportTab from "../components/ExportTab";
+import LightPreview from "../components/LightPreview";
+import { LAYOUT_NAMES } from "../defines";
 
 class CtaBuilder extends Component {
   constructor(props) {
@@ -23,6 +26,12 @@ class CtaBuilder extends Component {
       isLayoutChoose: false,
       isMinimal: false,
       isSidebar: true,
+      isSocialShare: false,
+      isDesign: true,
+      layout: null,
+      layoutName: LAYOUT_NAMES[0],
+      fontsList: [],
+      isExportTab: false,
       tabs: {
         isCallToActionTab: false,
         isComplianceTab: false,
@@ -32,10 +41,6 @@ class CtaBuilder extends Component {
         isMainButtonTab: false,
         isTriggerButtonTab: false,
       },
-      isDesign: true,
-      layout: null,
-      layoutName: LAYOUT_NAMES[0],
-      fontsList: [],
       behavior: {
         displayOnDesktop: true,
         displayOnMobile: true,
@@ -118,6 +123,8 @@ class CtaBuilder extends Component {
         triggerButtonIcon: ""
       }
     };
+
+    this.modal = React.createRef();
   }
 
   componentDidMount() {
@@ -140,10 +147,16 @@ class CtaBuilder extends Component {
     }
   }
 
-  onCloseTabs = () => {
+  onCloseTabs = (instead, calback) => {
     const { tabs } = this.state;
-    for (let i in tabs) { tabs[i] = false; }
-    this.setState({ tabs });
+    for (let i in tabs) {
+      if (instead) {
+        if (instead != i) tabs[i] = false;
+      } else {
+        tabs[i] = false;
+      }
+    }
+    this.setState({ tabs }, calback);
   }
 
   buildFontList = () => {
@@ -220,6 +233,24 @@ class CtaBuilder extends Component {
     this.setState({ isSidebar: true });
   }
 
+  onSocialToggle = () => {
+    const { isSocialShare } = this.state;
+    this.setState({ isSocialShare: !isSocialShare });
+  }
+
+  onExportToggle = () => {
+    const { isExportTab } = this.state;
+    this.setState({ isExportTab: !isExportTab });
+  }
+
+  onExportTabClose = () => {
+    this.setState({ isExportTab: false });
+  }
+
+  onSocialShareClose = () => {
+    this.setState({ isSocialShare: false });
+  }
+
   render() {
     const {
       isLayoutChoose,
@@ -230,12 +261,14 @@ class CtaBuilder extends Component {
       data,
       isMinimal,
       behavior,
-      isSidebar
+      isSidebar,
+      isSocialShare,
+      isExportTab
     } = this.state;
 
     return (
       <div className="cta-builder">
-        <Header isDesign={isDesign} layoutName={layoutName} onLayoutToggler={this.onLayoutToggler} onViewChange={this.onViewChange} />
+        <Header isDesign={isDesign} layoutName={layoutName} onExportToggle={this.onExportToggle} onSocialToggle={this.onSocialToggle} onLayoutToggler={this.onLayoutToggler} onViewChange={this.onViewChange} />
         <div className="cta-view">
           <Sidebar
             onClose={this.onCloseSidebar}
@@ -294,6 +327,8 @@ class CtaBuilder extends Component {
           } />
         </div>
         <Modal isOpen={isLayoutChoose} overlayClose={true} onClose={this.onLayoutChooseClose} type="cta-modal-cm" content={<LayoutChoose onLayoutChoose={this.onLayoutChoose} />} />
+        <Modal isOpen={isSocialShare} overlayClose={true} onClose={this.onSocialShareClose} content={<SocialShare />} />
+        <Modal isOpen={isExportTab} overlayClose={true} close={true} onClose={this.onExportTabClose} type="cta-modal-tab" content={<ExportTab modal={this.modal} data={data} layoutName={layoutName} preview={<LightPreview modal={this.modal} isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />} />} />
       </div>
     );
   }
