@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import DropDown from "../components/DropDown";
 import { LAYOUT_NAMES } from "../defines"
 
-let isMounted = false;
-
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -14,25 +12,13 @@ class Header extends Component {
     };
   }
 
-  componentDidMount() {
-    isMounted = true;
-    this.events();
-  }
-
-  componentWillUnmount(){
-    isMounted: false;
-    document.removeEventListener("click", ()=>{});
-  }
-
-  events = () =>{
-    document.addEventListener("click", (e) => {
-      if (isMounted) if (e.target.closest('.cta-dropdown') == null && e.target.closest('.cta-toggler') == null) this.setState({ isOpenMainMenu: false });
-    });
-  }
-
   onMainToggler = () => {
     const { isOpenMainMenu } = this.state;
     this.setState({ isOpenMainMenu: !isOpenMainMenu });
+  }
+
+  onCloseMenu = () => {
+    this.setState({isOpenMainMenu:false});
   }
 
   render() {
@@ -42,8 +28,8 @@ class Header extends Component {
     return (
       <div className="cta-header">
         <div className="cta-header-menu">
-          <button className="btn btn-transparent cta-toggler" onClick={this.onMainToggler}><i className="icon-menu"></i></button>
-          <DropDown isOpen={isOpenMainMenu}>
+          <button className="btn btn-transparent cta-toggler cta-dropdown-toggler" onClick={this.onMainToggler}><i className="icon-menu"></i></button>
+          <DropDown isOpen={isOpenMainMenu} onClose={this.onCloseMenu}>
             <div><i className="icon-help-circle"></i><span>Self-help center</span><i className="icon-new-window op05 ml-1"></i></div>
             <div><i className="icon-share"></i><span>Share this app</span></div>
             <div><i className="icon-sidebar"></i><span>Exit</span></div>

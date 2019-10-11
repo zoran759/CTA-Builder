@@ -48,6 +48,24 @@
   background-color: $tooltip-color!important;
   border-radius: $input-radius !important;
 
+  &.place-left {
+    &:after {
+      border-left-color: $tooltip-color !important;
+      border-left-style: solid !important;
+      border-left-width: 5px !important;
+      transform: translateX(-2px);
+    }
+  }
+
+  &.place-right {
+    &:after {
+      border-right-color: $tooltip-color !important;
+      border-right-style: solid !important;
+      border-right-width: 5px !important;
+      transform: translateX(2px);
+    }
+  }
+
   &.place-top {
     &:after {
       border-top-color: $tooltip-color !important;

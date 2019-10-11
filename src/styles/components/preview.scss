@@ -214,7 +214,21 @@
 .cta-design {
   &.preview{
     .cta-trigger-button-container {
+      display: inline-block;
+      width: auto;
       bottom: 0;
+
+      &.cta-position-br {
+        left: auto;
+        right: 0;
+      }
+      &.cta-position-bc {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &.cta-position-bl {
+        left: 0;
+      }
     }
   }
 }

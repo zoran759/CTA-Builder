@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { LAYOUT_NAMES } from "../defines"
+import DropDown from "../components/DropDown";
+import { LAYOUT_NAMES } from "../defines";
+import ReactTooltip from 'react-tooltip';
+
+let isMounted = false;
 
 class Preview extends Component {
   constructor(props) {
@@ -9,11 +13,32 @@ class Preview extends Component {
       isDesktop: true,
       isModal: false,
       isDesign: true,
+      isOpenDropDown: false,
     }
+  }
+
+  componentDidMount() {
+    isMounted = true;
+    this.events();
+  }
+
+  componentWillUnmount(){
+    isMounted: false;
+    document.removeEventListener("click", ()=>{});
+  }
+
+  events = () =>{
+    document.addEventListener("click", (e) => {
+      if (isMounted) if (e.target.closest('.cta-content') == null && e.target.closest('.cta-content-button.trigger') == null) {
+        this.setState({isModal:false});
+      }
+    });
   }
 
   componentDidUpdate(prevProps) {
     const { isDesign } = this.props;
+
+    isMounted = true;
 
     if (!isDesign == prevProps.isDesign) {
       if (isDesign) {
@@ -83,15 +108,32 @@ class Preview extends Component {
     this.setState({ isModal: false });
   }
 
+  ifTriggerAvailable = () => {
+    const { data } = this.props;
+    return (data.triggerButtonLabel || data.triggerButtonIcon);
+  }
+
+  onCloseTriger = () => {
+    this.setState({isOpenDropDown:true});
+  }
+
+  onCloseNotification = () => {
+    this.setState({isOpenDropDown:false});
+  }
+
+  onCloseNot = () =>{
+    this.setState({isOpenDropDown:false});
+  }
+
   render() {
-    const { isDesktop, isModal } = this.state;
-    const { isActive, data, behavior } = this.props;
+    const { isDesktop, isModal, isOpenDropDown } = this.state;
+    const { isActive, data, behavior, isDesign } = this.props;
 
     return (
-      <div className={`cta-design preview ${isActive && 'active'}`}>
-        <div className={`cta-screen-toggler ${this.ifOnlyImage() && "d-none"}`}>
-          <i className={`icon-desktop ${isDesktop && "active"}`} onClick={this.onDesktop}></i>
-          <i className={`icon-mobile ${!isDesktop && "active"}`} onClick={this.onPhone}></i>
+      <div className={`cta-design preview ${isActive ? 'active' : ''}`}>
+        <div className={`cta-screen-toggler ${this.ifOnlyImage() ? "d-none" : ''}`}>
+          <i className={`icon-desktop ${isDesktop ? "active" : ''}`} onClick={this.onDesktop}></i>
+          <i className={`icon-mobile ${!isDesktop ? "active" : ''}`} onClick={this.onPhone}></i>
         </div>
         <div className={`cta-screen-imitation-outer ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}><span className="cta-screen-not-real">device preview not at real scale</span></div>
         <div className={`cta-screen-imitation ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}>
@@ -104,7 +146,7 @@ class Preview extends Component {
             } : {}}
           >
             <div
-              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() && "d-none"} ${!data.logo && data.image ? "without-logo" : ''}`}
+              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''} ${!data.logo && data.image ? "without-logo" : ''}`}
               style={{
                 width: data.width + "px",
                 background: data.background,
@@ -126,7 +168,7 @@ class Preview extends Component {
                   {data.reason.length > 0 ? data.reason : <div><div>Add Call to action text</div></div>}
                 </div>
               </div>
-              <div style={{ textAlign: data.mainButtonAlign }}>
+              <div className={`${isDesktop ? "d-none" : ''}`} style={{ textAlign: data.mainButtonAlign }}>
                 {
                   this.ifFlyoutButton() ?
                     (
@@ -161,12 +203,19 @@ class Preview extends Component {
               </div>
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
+              <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
+              <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
+              <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
+                <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
+                <div data-tip="Buttons disabled in preview" data-for='dropdown'><span>Remind me later</span></div>
+                <div data-tip="Buttons disabled in preview" data-for='dropdown'><span>Don’t show this again</span></div>
+              </DropDown>
               {
                 !this.ifOnlyImage() ?
                   (
                     <div
                       onClick={this.onTrigger}
-                      className={`cta-content-button trigger ${(isDesktop && !behavior.displayOnDesktop) && "d-none"} ${(!isDesktop && !behavior.displayOnMobile) && "d-none"} ${data.triggerButtonType} ${data.triggerButtonAlign} ${(!data.triggerButtonLabel && !data.triggerButtonIcon) && "disabled"}`}
+                      className={`cta-content-button trigger ${(isDesktop && !behavior.displayOnDesktop) ? "d-none" : ''} ${(!isDesktop && !behavior.displayOnMobile) ? "d-none" : ''} ${data.triggerButtonType} ${data.triggerButtonAlign} ${(!data.triggerButtonLabel && !data.triggerButtonIcon) ? "disabled" : ''}`}
                       style={{
                         background: data.triggerButtonBackground,
                         color: data.triggerButtonFontColor,
@@ -178,7 +227,7 @@ class Preview extends Component {
                         fontWeight: data.triggerButtonWeight,
                         fontStyle: data.triggerButtonItalic
                       }}>
-                      {data.triggerButtonLabel || data.triggerButtonIcon ? data.triggerButtonIcon ? <><i className={data.triggerButtonIcon}></i>{data.triggerButtonLabel}</> : <>{data.triggerButtonLabel}</> : <span>Trigger button not configured</span>}
+                      {this.ifTriggerAvailable() ? data.triggerButtonIcon ? <><i className={data.triggerButtonIcon}></i>{data.triggerButtonLabel}</> : <>{data.triggerButtonLabel}</> : <span>Trigger button not configured</span>}
                     </div>
                   ) : ''
               }
