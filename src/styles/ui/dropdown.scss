@@ -9,7 +9,7 @@
   pointer-events: none;
   @include shadow($shadow);
   transition: opacity $transition ease;
-  z-index: 12;
+  z-index: 13;
 
   .cta-btn-close {
     position: absolute;

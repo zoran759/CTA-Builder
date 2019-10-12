@@ -190,28 +190,6 @@
   }
 }
 
-.cta-btn-close {
-  width: 1.75rem;
-  height: 1.75rem;
-  background-color: $color-white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.6rem;
-  color: $color-dark-gray;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: color $transition ease;
-
-  i{
-    display: block !important;
-  }
-
-  &:hover{
-    color: $color-dark;
-  }
-}
-
 .btn-neutral-outline {
   display: flex;
   border-radius: 2rem;

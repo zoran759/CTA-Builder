@@ -10,7 +10,6 @@ class ExportTab extends Component {
 
     this.state = {
       tab: 'Get code',
-      folder: window.location.href
     };
 
     this.codeArea = React.createRef();
@@ -21,6 +20,14 @@ class ExportTab extends Component {
   componentDidMount() {
     autosize(this.codeArea.current);
     this.buildCode();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isExportTab } = this.props;
+
+    if (!isExportTab == prevProps.isExportTab) {
+      this.buildCode();
+    }
   }
 
   onDownloadImage = () => {
@@ -48,10 +55,9 @@ class ExportTab extends Component {
   }
 
   buildCode = () => {
-    const { data } = this.props;
-    const { folder } = this.state;
+    const { data, behavior, layoutName } = this.props;
 
-    this.codeArea.current.value = "<script>\nvar ctaData;\n(function (d, l, i, h, s) {\nh = d.getElementsByTagName('head')[0];\ns = d.createElement('script');\ns.async = 1;\ns.src = l;\nctaData = i;\nh.appendChild(s);\n}(document, '" + folder + "cta-viewer/cta-viewer.js?v=0.1', '" + this.b64EncodeUnicode(JSON.stringify(data)) + "'));\n</script>";
+    this.codeArea.current.value = "<script>\nvar ctaData;\n(function (d, l, i, h, s) {\nh = d.getElementsByTagName('head')[0];\ns = d.createElement('script');\ns.async = 1;\ns.src = l;\nctaData = i;\nh.appendChild(s);\n}(document, '" + data.folder + "assets/ctaviewer.js?v=0.1', '" + this.b64EncodeUnicode(JSON.stringify({data:data, behavior:behavior, layoutName:layoutName})) + "'));\n</script>";
     autosize.update(this.codeArea.current);
     this.buildCodeLines();
     document.querySelector(".cta-builder-copy").classList.remove("disabled");
@@ -70,8 +76,9 @@ class ExportTab extends Component {
 
   b64EncodeUnicode = (str) => {
     return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
-      this.toSolidBytes()
-    ));
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
   }
 
   toSolidBytes = (match, p1) => {

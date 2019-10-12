@@ -52,7 +52,7 @@ class CtaBuilder extends Component {
         delay: 1000,
       },
       data: {
-        folder: '',
+        folder: window.location.href,
         reason: '',
         reasonAlign: 'left',
         reasonWeight: '',
@@ -129,8 +129,9 @@ class CtaBuilder extends Component {
 
   componentDidMount() {
     this.buildFontList();
+    this.events();
 
-    document.addEventListener("keydown", this.onEscape, false);
+    
 
     setTimeout(() => {
       document.querySelector("#loader").style.display = "none";
@@ -139,6 +140,21 @@ class CtaBuilder extends Component {
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.onEscape, false);
+    window.removeEventListener("resize", ()=>{}, false);
+  }
+
+  events = () => {
+
+    document.addEventListener("keydown", this.onEscape, false);
+    window.addEventListener("resize", ()=>{
+      const {isSidebar} = this.state;
+
+      if(window.innerWidth < 991) {
+        if(isSidebar) this.setState({ isSidebar: false })
+      }else{
+        if(!isSidebar) this.setState({ isSidebar: true })
+      }
+    });
   }
 
   onEscape = (e) => {
@@ -328,7 +344,7 @@ class CtaBuilder extends Component {
         </div>
         <Modal isOpen={isLayoutChoose} overlayClose={true} onClose={this.onLayoutChooseClose} type="cta-modal-cm" content={<LayoutChoose onLayoutChoose={this.onLayoutChoose} />} />
         <Modal isOpen={isSocialShare} overlayClose={true} onClose={this.onSocialShareClose} content={<SocialShare />} />
-        <Modal isOpen={isExportTab} overlayClose={true} close={true} onClose={this.onExportTabClose} type="cta-modal-tab" content={<ExportTab modal={this.modal} data={data} layoutName={layoutName} preview={<LightPreview modal={this.modal} isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />} />} />
+        <Modal isOpen={isExportTab} overlayClose={true} close={true} onClose={this.onExportTabClose} type="cta-modal-tab" content={<ExportTab modal={this.modal} isExportTab={isExportTab} data={data} behavior={behavior} layoutName={layoutName} preview={<LightPreview modal={this.modal} isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />} />} />
       </div>
     );
   }

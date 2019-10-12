@@ -83,6 +83,14 @@
 
     @media screen and (max-width: $md) {
       width: calc(100% - 2rem);
+
+      .cta-screen-not-real {
+        max-width: 160px;
+        bottom: -10vh;
+        left: 50%;
+        text-align: center;
+        transform: translateX(-50%);
+      }
     }
 
     @media screen and (max-width: $mobile) {

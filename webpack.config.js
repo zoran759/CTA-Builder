@@ -4,7 +4,10 @@ const webpack = require("webpack");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    ctabuilder: "./src/cta-builder.js",
+    ctaviewer: './src/cta-viewer.js',
+  },
   mode: "development",
   module: {
     rules: [
@@ -54,7 +57,6 @@ resolve: { extensions: ["*", ".js", ".jsx"] },
 output: {
   path: path.resolve("./dist/assets"),
   publicPath: "./assets/",
-  filename: "bundle.js"
 },
 devServer: {
   contentBase: "./src/",

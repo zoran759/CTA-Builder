@@ -10,7 +10,7 @@
   flex-shrink: 0;
   flex-direction: column;
   transform: translateX(-100%);
-  z-index: 2;
+  z-index: 12;
   transition: all $transition ease;
 
   &.active{

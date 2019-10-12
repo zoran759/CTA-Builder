@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import DropDown from "../components/DropDown";
 import { LAYOUT_NAMES } from "../defines";
 import ReactTooltip from 'react-tooltip';
+import { threadId } from "worker_threads";
 
 let isMounted = false;
 
@@ -22,15 +23,15 @@ class Preview extends Component {
     this.events();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     isMounted: false;
-    document.removeEventListener("click", ()=>{});
+    document.removeEventListener("click", () => { });
   }
 
-  events = () =>{
+  events = () => {
     document.addEventListener("click", (e) => {
       if (isMounted) if (e.target.closest('.cta-content') == null && e.target.closest('.cta-content-button.trigger') == null) {
-        this.setState({isModal:false});
+        this.setState({ isModal: false });
       }
     });
   }
@@ -114,29 +115,45 @@ class Preview extends Component {
   }
 
   onCloseTriger = () => {
-    this.setState({isOpenDropDown:true});
+    this.setState({ isOpenDropDown: true });
   }
 
   onCloseNotification = () => {
-    this.setState({isOpenDropDown:false});
+    this.setState({ isOpenDropDown: false });
   }
 
-  onCloseNot = () =>{
-    this.setState({isOpenDropDown:false});
+  onCloseNot = () => {
+    this.setState({ isOpenDropDown: false });
   }
+
+  // onLater = () => {
+  //   const { onRemindLater } = this.props;
+  //   onRemindLater();
+  //   this.setState({isOpenDropDown:false});
+  // }
+  // onDont = () => {
+  //   const { onDontShow } = this.props;
+  //   this.setState({isOpenDropDown:false});
+  //   onDontShow();
+  // }
 
   render() {
     const { isDesktop, isModal, isOpenDropDown } = this.state;
-    const { isActive, data, behavior, isDesign } = this.props;
+    const { isActive, data, behavior, isDesign, isProduction, isTriggerActive, onDontShow, onRemindLater} = this.props;
 
     return (
-      <div className={`cta-design preview ${isActive ? 'active' : ''}`}>
-        <div className={`cta-screen-toggler ${this.ifOnlyImage() ? "d-none" : ''}`}>
-          <i className={`icon-desktop ${isDesktop ? "active" : ''}`} onClick={this.onDesktop}></i>
-          <i className={`icon-mobile ${!isDesktop ? "active" : ''}`} onClick={this.onPhone}></i>
-        </div>
-        <div className={`cta-screen-imitation-outer ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}><span className="cta-screen-not-real">device preview not at real scale</span></div>
-        <div className={`cta-screen-imitation ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}>
+      <div className={`cta-design ${isProduction ? "production" : null} preview ${isActive ? 'active' : null}`}>
+        {!isProduction ? (
+          <>
+            <div className={`cta-screen-toggler ${this.ifOnlyImage() ? "d-none" : ''}`}>
+              <i className={`icon-desktop ${isDesktop ? "active" : ''}`} onClick={this.onDesktop}></i>
+              <i className={`icon-mobile ${!isDesktop ? "active" : ''}`} onClick={this.onPhone}></i>
+            </div>
+            <div className={`cta-screen-imitation-outer ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}><span className="cta-screen-not-real">device preview not at real scale</span></div>
+          </>
+        ) : null}
+
+        <div className={`cta-screen-imitation ${isTriggerActive ? "active" : null} ${!isProduction ? !this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : '' : ''}`}>
           <div
             className={`cta-content-container ${!isDesktop && !this.ifOnlyImage() ? "mobile" : ''} ${!this.ifOnlyImage() ? behavior.position : ''}`}
             style={!this.ifOnlyImage() ? {
@@ -168,11 +185,11 @@ class Preview extends Component {
                   {data.reason.length > 0 ? data.reason : <div><div>Add Call to action text</div></div>}
                 </div>
               </div>
-              <div className={`${isDesktop ? "d-none" : ''}`} style={{ textAlign: data.mainButtonAlign }}>
+              <div style={{ textAlign: data.mainButtonAlign }}>
                 {
                   this.ifFlyoutButton() ?
                     (
-                      <div className={`cta-content-button main ${data.mainButtonType} ${data.mainButtonAlign}`} style={{
+                      <div className={`cta-content-button main ${isDesktop ? "d-none" : ''} ${data.mainButtonType} ${data.mainButtonAlign}`} style={{
                         background: data.mainButtonBackground,
                         color: data.mainButtonFontColor,
                         fontFamily: data.mainButtonFont,
@@ -207,8 +224,8 @@ class Preview extends Component {
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
                 <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
-                <div className="cta-dropdown-link" data-tip="Buttons disabled in preview" data-for='dropdown'><span>Remind me later</span></div>
-                <div className="cta-dropdown-link" data-tip="Buttons disabled in preview" data-for='dropdown'><span>Don’t show this again</span></div>
+                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={onRemindLater}><span>Remind me later</span></div>
+                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={onDontShow}><span>Don’t show this again</span></div>
               </DropDown>
               {
                 !this.ifOnlyImage() ?
