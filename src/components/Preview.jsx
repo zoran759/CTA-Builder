@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import DropDown from "../components/DropDown";
 import { LAYOUT_NAMES } from "../defines";
 import ReactTooltip from 'react-tooltip';
-import { threadId } from "worker_threads";
+import ToolTip from "../components/ToolTip";
+import {validateEmail, validURL} from '../utils/utils';
 
 let isMounted = false;
 
@@ -102,7 +103,10 @@ class Preview extends Component {
 
   onTrigger = () => {
     const { isModal } = this.state;
+    const { setTooltip } = this.props;
     this.setState({ isModal: !isModal });
+
+    setTooltip("isTriggerButtonTooltip");
   }
 
   onClose = () => {
@@ -126,23 +130,38 @@ class Preview extends Component {
     this.setState({ isOpenDropDown: false });
   }
 
-  // onLater = () => {
-  //   const { onRemindLater } = this.props;
-  //   onRemindLater();
-  //   this.setState({isOpenDropDown:false});
-  // }
-  // onDont = () => {
-  //   const { onDontShow } = this.props;
-  //   this.setState({isOpenDropDown:false});
-  //   onDontShow();
-  // }
+  onLater = () => {
+    const { onRemindLater } = this.props;
+    onRemindLater();
+    this.setState({isOpenDropDown:false});
+  }
+  onDont = () => {
+    const { onDontShow } = this.props;
+    this.setState({isOpenDropDown:false});
+    onDontShow();
+  }
+
+  generateLink = () => {
+    const {data} = this.props;
+    let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+    let url = data.folder + "privacy/?d=" + pdata;
+
+    return <div className={`cta-content-legal-links ${!validateEmail(data.email) ? "disabled" : ''}`}><a target="_blank" href={url}>Terms & Privacy Policy Information</a></div>;
+  }
+
+  b64EncodeUnicode = (str) => {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
 
   render() {
     const { isDesktop, isModal, isOpenDropDown } = this.state;
-    const { isActive, data, behavior, isDesign, isProduction, isTriggerActive, onDontShow, onRemindLater} = this.props;
+    const { isActive, data, behavior, isDesign, isProduction, isTriggerActive, toolTips } = this.props;
 
     return (
-      <div className={`cta-design ${isProduction ? "production" : null} preview ${isActive ? 'active' : null}`}>
+      <div className={`cta-design ${isProduction ? "production" : ''} preview ${isActive ? 'active' : ''}`}>
         {!isProduction ? (
           <>
             <div className={`cta-screen-toggler ${this.ifOnlyImage() ? "d-none" : ''}`}>
@@ -153,7 +172,7 @@ class Preview extends Component {
           </>
         ) : null}
 
-        <div className={`cta-screen-imitation ${isTriggerActive ? "active" : null} ${!isProduction ? !this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : '' : ''}`}>
+        <div className={`cta-screen-imitation ${isTriggerActive ? "active" : ''} ${!isProduction ? !this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : '' : ''}`}>
           <div
             className={`cta-content-container ${!isDesktop && !this.ifOnlyImage() ? "mobile" : ''} ${!this.ifOnlyImage() ? behavior.position : ''}`}
             style={!this.ifOnlyImage() ? {
@@ -213,19 +232,20 @@ class Preview extends Component {
                   :
                   ''}
                 {data.customPrivacy ?
-                  (data.privacy && data.terms) ? <div className="cta-content-legal-links"><a target="_blank" href={data.privacy}>Privacy Policy</a> <a target="_blank" href={data.terms}>Terms & Conditions</a></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
+                  (data.privacy && data.terms) ? <div className={`cta-content-legal-links ${!validURL(data.privacy) || !validURL(data.terms) ? "disabled" : ''}`}><a target="_blank" href={data.privacy}>Privacy Policy</a> <a target="_blank" href={data.terms}>Terms & Conditions</a></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
                   :
-                  (data.company && data.email) ? <div className="cta-content-legal-links"><a target="_blank" href="#">Terms & Privacy Policy Information</a></div> : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
+                  (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
                 }
               </div>
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
+              <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && this.ifTriggerAvailable()} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" />
               <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
                 <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
-                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={onRemindLater}><span>Remind me later</span></div>
-                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={onDontShow}><span>Don’t show this again</span></div>
+                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={this.onLater}><span>Remind me later</span></div>
+                <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={this.onDont}><span>Don’t show this again</span></div>
               </DropDown>
               {
                 !this.ifOnlyImage() ?

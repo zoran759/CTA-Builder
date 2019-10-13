@@ -15,7 +15,7 @@ class Modal extends Component {
 
     return (
       <div className={`cta-modal ${type ? type : mtype} ${isOpen ? 'active' : ''}`} >
-        <div className="cta-modal-overlay" onClick={overlayClose ? onClose : ''}></div>
+        <div className="cta-modal-overlay" onClick={overlayClose ? onClose : null}></div>
         <div className="cta-modal-content">
           {close ? <div className="cta-modal-close" onClick={onClose}><i className="icon-close"></i></div> : ''}
           {content}

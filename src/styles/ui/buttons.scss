@@ -88,6 +88,11 @@
     }
   }
 
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   @media screen and (max-width: $mobile) {
     &.cta-toggler {
       padding: 1rem;

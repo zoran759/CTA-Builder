@@ -1,4 +1,8 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+
+export const services = {
+  shortLinksKey: "AIzaSyA8Nm6oDG9n620UdTHfXww3xhBtW2yekq8"
+}
 
 export const LAYOUT_NAMES = [
   'Image only',

@@ -32,6 +32,14 @@ class CtaBuilder extends Component {
       layoutName: LAYOUT_NAMES[0],
       fontsList: [],
       isExportTab: false,
+      toolTips: {
+        isCallToActionTooltip: true,
+        isMainButtonTooltip: true,
+        isPreviewTooltip: true,
+        isTriggerButtonTooltip: true,
+        isExportTooltip: true,
+        isTriggerOnlyTooltip: true,
+      },
       tabs: {
         isCallToActionTab: false,
         isComplianceTab: false,
@@ -130,29 +138,70 @@ class CtaBuilder extends Component {
   componentDidMount() {
     this.buildFontList();
     this.events();
-
-    
+    this.setTooltips();
 
     setTimeout(() => {
       document.querySelector("#loader").style.display = "none";
     }, 1000)
+
+    setTimeout(() => {
+      this.setState({ isLayoutChoose: true });
+    }, 2000)
+  }
+
+  setTooltip = (tooltip) => {
+
+    const {toolTips} = this.state;
+
+    localStorage.setItem('cta-builder-'+tooltip, "viewed")
+
+    toolTips[tooltip] = false;
+
+  }
+
+  setTooltips = () => {
+
+    let isCallToActionTooltip = localStorage.getItem('cta-builder-isCallToActionTooltip') == "viewed" ? false : true;
+    let isMainButtonTooltip = localStorage.getItem('cta-builder-isMainButtonTooltip')  == "viewed" ? false : true;
+    let isPreviewTooltip = localStorage.getItem('cta-builder-isPreviewTooltip')  == "viewed" ? false : true;
+    let isTriggerButtonTooltip = localStorage.getItem('cta-builder-isTriggerButtonTooltip')  == "viewed" ? false : true;
+    let isExportTooltip = localStorage.getItem('cta-builder-isExportTooltip')  == "viewed" ? false : true;
+    let isTriggerOnlyTooltip = localStorage.getItem('cta-builder-isTriggerOnlyTooltip')  == "viewed" ? false : true;
+
+    this.setState({
+      toolTips: {
+        isCallToActionTooltip: isCallToActionTooltip,
+        isMainButtonTooltip: isMainButtonTooltip,
+        isPreviewTooltip: isPreviewTooltip,
+        isTriggerButtonTooltip: isTriggerButtonTooltip,
+        isExportTooltip: isExportTooltip,
+        isTriggerOnlyTooltip: isTriggerOnlyTooltip,
+      }
+    });
+
   }
 
   componentWillUnmount() {
     document.removeEventListener("keydown", this.onEscape, false);
-    window.removeEventListener("resize", ()=>{}, false);
+    window.removeEventListener("resize", () => { }, false);
   }
 
   events = () => {
 
     document.addEventListener("keydown", this.onEscape, false);
-    window.addEventListener("resize", ()=>{
-      const {isSidebar} = this.state;
+    window.addEventListener("resize", () => {
+      const { isSidebar } = this.state;
 
-      if(window.innerWidth < 991) {
-        if(isSidebar) this.setState({ isSidebar: false })
-      }else{
-        if(!isSidebar) this.setState({ isSidebar: true })
+      if (window.innerWidth < 991) {
+        if (isSidebar) this.setState({ isSidebar: false })
+      } else {
+        if (!isSidebar) this.setState({ isSidebar: true })
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (e.target.closest('.cta-edittab') == null && e.target.closest('.cta-content-container') == null) {
+        this.onCloseTabs();
       }
     });
   }
@@ -217,6 +266,7 @@ class CtaBuilder extends Component {
 
   onViewChange = (is) => {
     this.onCloseTabs();
+    if(!is) this.setTooltip("isPreviewTooltip");
     this.setState({ isDesign: is });
   }
 
@@ -238,6 +288,8 @@ class CtaBuilder extends Component {
   }
 
   onUpdateTabs = (tabs) => {
+    if (tabs.isCallToActionTab) this.setTooltip("isCallToActionTooltip");
+    if (tabs.isMainButtonTab) this.setTooltip("isMainButtonTooltip");
     this.setState({ tabs });
   }
 
@@ -256,6 +308,7 @@ class CtaBuilder extends Component {
 
   onExportToggle = () => {
     const { isExportTab } = this.state;
+    if (!isExportTab) this.setTooltip("isExportTooltip");
     this.setState({ isExportTab: !isExportTab });
   }
 
@@ -279,12 +332,22 @@ class CtaBuilder extends Component {
       behavior,
       isSidebar,
       isSocialShare,
-      isExportTab
+      isExportTab,
+      toolTips
     } = this.state;
 
     return (
       <div className="cta-builder">
-        <Header isDesign={isDesign} layoutName={layoutName} onExportToggle={this.onExportToggle} onSocialToggle={this.onSocialToggle} onLayoutToggler={this.onLayoutToggler} onViewChange={this.onViewChange} />
+        <Header
+          isDesign={isDesign}
+          data={data}
+          layoutName={layoutName}
+          onExportToggle={this.onExportToggle}
+          onSocialToggle={this.onSocialToggle}
+          onLayoutToggler={this.onLayoutToggler}
+          onViewChange={this.onViewChange}
+          toolTips={toolTips}
+        />
         <div className="cta-view">
           <Sidebar
             onClose={this.onCloseSidebar}
@@ -296,8 +359,8 @@ class CtaBuilder extends Component {
             isSidebar={isSidebar}
             isDesign={isDesign}
           />
-          <Design behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
-          <Preview isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
+          <Design setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
+          <Preview setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab
               data={data}
@@ -342,7 +405,7 @@ class CtaBuilder extends Component {
               onUpdate={this.onUpdate} />
           } />
         </div>
-        <Modal isOpen={isLayoutChoose} overlayClose={true} onClose={this.onLayoutChooseClose} type="cta-modal-cm" content={<LayoutChoose onLayoutChoose={this.onLayoutChoose} />} />
+        <Modal isOpen={isLayoutChoose} overlayClose={false} onClose={this.onLayoutChooseClose} type="cta-modal-cm" content={<LayoutChoose onLayoutChoose={this.onLayoutChoose} />} />
         <Modal isOpen={isSocialShare} overlayClose={true} onClose={this.onSocialShareClose} content={<SocialShare />} />
         <Modal isOpen={isExportTab} overlayClose={true} close={true} onClose={this.onExportTabClose} type="cta-modal-tab" content={<ExportTab modal={this.modal} isExportTab={isExportTab} data={data} behavior={behavior} layoutName={layoutName} preview={<LightPreview modal={this.modal} isDesign={isDesign} behavior={behavior} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />} />} />
       </div>

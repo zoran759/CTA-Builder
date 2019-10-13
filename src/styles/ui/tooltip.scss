@@ -36,7 +36,7 @@
     }
   }
 
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: $md) {
     .tooltiptext {
       display: none;
     }
@@ -45,8 +45,15 @@
 
 .tolltip-basic {
   color: $color-white !important;
-  background-color: $tooltip-color!important;
+  background-color: $tooltip-color !important;
   border-radius: $input-radius !important;
+
+  &.tw-200 {
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
 
   &.place-left {
     &:after {
@@ -80,7 +87,120 @@
       border-bottom-color: $tooltip-color !important;
       border-bottom-style: solid !important;
       border-bottom-width: 5px !important;
-      transform: translateY(1px);
+      transform: translateY(2px);
     }
+  }
+}
+
+.cta-special-tooltip {
+  position: absolute;
+  pointer-events: none;
+  line-height: 140%;
+  opacity: 0;
+  color: $color-dark-gray;
+  font-size: 0.8125rem;
+  letter-spacing: 0.2px;
+  transition: opacity $transition ease;
+
+  &.active {
+    opacity: 1;
+  }
+
+  i {
+    position: absolute;
+    font-size: 1rem;
+  }
+
+  &.left {
+    max-width: 160px;
+    text-align: right;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-135%);
+
+    i {
+      top: -14px;
+      right: -30px;
+    }
+  }
+
+  &.active {
+    &.top {
+      max-height: 50px;
+    }
+  }
+
+  &.top {
+    position: relative;
+    text-align: left;
+    max-height: 0;
+    top: -10px;
+    width: 100%;
+    max-width: 100%;
+    line-height: 2rem;
+    padding-left: 20px;
+
+    i {
+      font-size: 1.2rem;
+      top: -0px;
+      left: 0;
+    }
+  }
+
+  &.top-header {
+    width: 180px;
+    right: 70px;
+    bottom: -80px;
+    text-align: left;
+
+    i {
+      font-size: 1.2rem;
+      top: -14px;
+      right: 0;
+    }
+  }
+
+  &.top-preview {
+    width: 140px;
+    left: 50px;
+    bottom: -60px;
+    text-align: left;
+    white-space: initial;
+
+    i {
+      font-size: 1.3rem;
+      top: -14px;
+      left: -20px;
+    }
+  }
+
+  &.bottom-trigger {
+    width: 220px;
+    text-align: right;
+    left: 0;
+    bottom: 20px;
+    transform: translateX(-120%);
+
+    i {
+      top: -14px;
+      right: -30px;
+    }
+  }
+
+  &.middle-trigger {
+    width: 120px;
+    text-align: right;
+    left: 0;
+    bottom: 20px;
+    transform: translateX(-100%);
+
+    i {
+      top: -14px;
+      right: -30px;
+    }
+  }
+
+  @media screen and (max-width: $md) {
+    display: none;
   }
 }

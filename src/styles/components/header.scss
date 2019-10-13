@@ -6,6 +6,23 @@
   width: 100%;
   border-bottom: 1px solid $border-color;
 
+  .cta-links {
+    .cta-link {
+      opacity: 1;
+
+      span {
+        opacity: 0.5;
+        transition: opacity $transition ease;
+      }
+
+      &:hover, &.active{
+        span{
+          opacity: 1;
+        }        
+      }
+    }
+  }
+  
   .cta-header-menu {
     display: flex;
 

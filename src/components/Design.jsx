@@ -1,5 +1,8 @@
 import React, { Component } from "react";
-import { LAYOUT_NAMES } from "../defines"
+import { LAYOUT_NAMES } from "../defines";
+import ToolTip from "../components/ToolTip";
+import {validateEmail, validURL} from '../utils/utils';
+
 
 class Design extends Component {
   constructor(props) {
@@ -7,13 +10,15 @@ class Design extends Component {
   }
 
   navigateToTab = (name) => {
-    const { onUpdateTabs, tabs } = this.props;
+    const { onUpdateTabs, tabs, setTooltip } = this.props;
 
     for (let i in tabs) {
       tabs[i] = false;
       if (i == name) tabs[i] = true;
     }
     onUpdateTabs(tabs);
+
+    if(name == "isTriggerButtonTab" && this.ifTriggerButton) setTooltip("isTriggerOnlyTooltip");
   }
 
   ifOnlyImage = () => {
@@ -31,8 +36,23 @@ class Design extends Component {
     return layoutName == LAYOUT_NAMES[2];
   }
 
+  generateLink = () => {
+    const {data} = this.props;
+    let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+    let url = data.folder + "privacy/?d=" + pdata;
+
+    return <div className={`cta-content-legal-links ${!validateEmail(data.email) ? "disabled" : ''}`}><a target="_blank" href={url}>Terms & Privacy Policy Information</a></div>;
+  }
+
+  b64EncodeUnicode = (str) => {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+
   render() {
-    const { isActive, data,  behavior } = this.props;
+    const { isActive, data, behavior, toolTips, isDesign } = this.props;
 
     return (
       <div className={`cta-design ${isActive ? 'active' : ''}`}>
@@ -50,6 +70,7 @@ class Design extends Component {
                 {data.image && data.image != "http://" && data.image != "https://" ? <img src={data.image} /> : <div><div>Header image <span className="cta-optional">(optional)</span></div></div>}
               </div>
               <div className={`cta-block cta-content-text ${data.reason ? "filed" : ''}`} onClick={() => { this.navigateToTab("isCallToActionTab") }} style={{ fontSize: data.size + "px", fontFamily: data.font, color: data.color, fontWeight: data.reasonWeight, fontStyle: data.reasonItalic, textAlign: data.reasonAlign }}>
+                <ToolTip isActive={isDesign && toolTips.isCallToActionTooltip} text="Click the text block to edit the dummy content." type="left" />
                 {data.reason.length > 0 ? data.reason : <div><div>Add Call to action text</div></div>}
               </div>
             </div>
@@ -57,6 +78,7 @@ class Design extends Component {
               {
                 this.ifFlyoutButton() ?
                   (
+                    <>
                     <div className={`cta-content-button main ${data.mainButtonType} ${data.mainButtonAlign}`} onClick={() => { this.navigateToTab("isMainButtonTab") }} style={{
                       background: data.mainButtonBackground,
                       color: data.mainButtonFontColor,
@@ -70,8 +92,11 @@ class Design extends Component {
                     }}>
                       {(data.mainButtonLabel || data.mainButtonIcon) ? data.mainButtonIcon ? <><i className={data.mainButtonIcon}></i>{data.mainButtonLabel}</> : <>{data.mainButtonLabel}</> : <span>Setup main button</span>}
                     </div>
+                    <ToolTip isActive={isDesign && toolTips.isMainButtonTooltip} text="Only used on mobile, to open the native SMS app" type="top" />
+                    </>
                   ) : ''
               }
+              
             </div>
             <div className={`cta-content-legal ${(data.privacy && data.terms) || (data.company && data.email) ? "filed" : ''}`} onClick={() => { this.navigateToTab("isComplianceTab") }} style={{ fontSize: data.complianceSize + "px", fontFamily: data.complianceFont, color: data.complianceColor, fontWeight: data.complianceWeight, fontStyle: data.complianceItalic, textAlign: data.complianceAlign }}>
               {(data.privacy && data.terms) || (data.company && data.email) ?
@@ -81,13 +106,14 @@ class Design extends Component {
                 :
                 ''}
               {data.customPrivacy ?
-                (data.privacy && data.terms) ? <div className="cta-content-legal-links"><a target="_blank" href={data.privacy}>Privacy Policy</a> <a target="_blank" href={data.terms}>Terms & Conditions</a></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
+                (data.privacy && data.terms) ? <div className={`cta-content-legal-links ${!validURL(data.privacy) || !validURL(data.terms) ? "disabled" : ''}`}><a target="_blank" href={data.privacy}>Privacy Policy</a> <a target="_blank" href={data.terms}>Terms & Conditions</a></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
                 :
-                (data.company && data.email) ? <div className="cta-content-legal-links"><a target="_blank" href="#">Terms & Privacy Policy Information</a></div> : <div className="cta-legal-toggler"><span>Setup legal footnote</span></div>
+                (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Setup legal footnote</span></div>
               }
             </div>
           </div>
           <div className={`cta-trigger-button-container ${behavior.position}`}>
+            <ToolTip isActive={isDesign && toolTips.isTriggerOnlyTooltip && this.ifTriggerButton()} text="Click the button to start editing it" type="middle-trigger" />
             {
               !this.ifOnlyImage() ?
                 (

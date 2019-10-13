@@ -179,17 +179,22 @@
     align-items: center;
     justify-content: center;
     font-size: 0.6rem;
-    color: $color-dark-gray;
     border-radius: 50%;
     cursor: pointer;
     transition: color $transition ease;
   
     i{
+      transition: color $transition ease;
+      color: $color-light-gray;
       display: block !important;
     }
   
     &:hover{
       color: $color-dark;
+
+      i {
+        color: $color-dark;
+      }
     }
   }
 
@@ -261,7 +266,6 @@
     padding: $spacer;
     border: 1px solid transparent;
     position: relative;
-    overflow: hidden;
     opacity: 0;
     pointer-events: none;
     z-index: 2;
@@ -344,6 +348,7 @@
       cursor: pointer;
       transition: border $transition ease, background-color $transition ease;
       margin-bottom: $spacer/2;
+      position: relative;
 
       &:hover {
         background-color: rgba($color-primary, 0.05);
@@ -375,7 +380,7 @@
         color: inherit;
       }
 
-      > div {
+      > div:not(.cta-special-tooltip) {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -401,17 +406,17 @@
         text-align: right;
       }
 
-      > div {
+      > div:not(.cta-special-tooltip) {
         min-height: 50px;
       }
     }
     .cta-content-image {
-      > div {
+      > div:not(.cta-special-tooltip) {
         min-height: 100px;
       }
     }
     .cta-content-text {
-      > div {
+      > div:not(.cta-special-tooltip) {
         min-height: 100px;
       }
     }
@@ -449,6 +454,14 @@
       }
 
       .cta-content-legal-links {
+
+        transition: opacity $transition ease;
+
+        &.disabled{
+          opacity: 0.5;
+          pointer-events: none;
+        }
+
         span,
         a {
           text-decoration: none;
@@ -467,11 +480,13 @@
   &.preview{
     .cta-content {
 
+      overflow: hidden;
+
       &.without-logo{
         padding-top: 0;
 
         .cta-content-image.boxed{
-          margin-top: $spacer;
+          padding-top: $spacer;
         }
       }
       .cta-block {

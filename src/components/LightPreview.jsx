@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import DropDown from "./DropDown";
 import { LAYOUT_NAMES } from "../defines";
 import ReactTooltip from 'react-tooltip';
+import shortLinks from "../services/shortLinks";
 
 let isMounted = false;
 
 class LightPreview extends Component {
   constructor(props) {
     super(props);
+
+    this.shortLinks = new shortLinks();
 
     this.state = {
       isDesktop: true,
@@ -125,6 +128,22 @@ class LightPreview extends Component {
     this.setState({ isOpenDropDown: false });
   }
 
+  generateLink = () => {
+    const {data} = this.props;
+    var pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+
+    //if(validateEmail(data.email) && (data.company.length > 0)) this.shortLinks.set(url);
+
+    return <div className="cta-content-legal-links"><a target="_blank" href={data.folder + "privacy/?d=" + pdata}>For Terms & Privacy Policy, please visit {data.folder + "privacy/?d=" + pdata}</a></div>;
+  }
+
+  b64EncodeUnicode = (str) => {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
+  }
+
   render() {
     const { isDesktop, isModal, isOpenDropDown } = this.state;
     const { data, behavior, modal } = this.props;
@@ -191,9 +210,9 @@ class LightPreview extends Component {
                 :
                 ''}
               {data.customPrivacy ?
-                (data.privacy && data.terms) ? <div className="cta-content-legal-links"><a target="_blank" href={data.privacy}>Privacy Policy</a> <a target="_blank" href={data.terms}>Terms & Conditions</a></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
+                (data.privacy && data.terms) ? <div className="cta-content-legal-links"><div><a target="_blank" href={data.privacy}>For Privacy Policy, visit {data.privacy}</a></div><div><a target="_blank" href={data.terms}>For Terms & Conditions visit {data.terms}</a></div></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
                 :
-                (data.company && data.email) ? <div className="cta-content-legal-links"><a target="_blank" href="#">Terms & Privacy Policy Information</a></div> : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
+                (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
               }
             </div>
           </div>
