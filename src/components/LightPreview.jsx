@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import DropDown from "./DropDown";
 import { LAYOUT_NAMES } from "../defines";
 import ReactTooltip from 'react-tooltip';
-import shortLinks from "../services/shortLinks";
 
 let isMounted = false;
 
 class LightPreview extends Component {
   constructor(props) {
     super(props);
-
-    this.shortLinks = new shortLinks();
 
     this.state = {
       isDesktop: true,
@@ -130,11 +127,25 @@ class LightPreview extends Component {
 
   generateLink = () => {
     const {data} = this.props;
-    var pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+    
+    let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+    let url = null;
 
-    //if(validateEmail(data.email) && (data.company.length > 0)) this.shortLinks.set(url);
+    data.shortTermsPrivacy ? url = data.shortTermsPrivacy : url = data.folder + "privacy/?d=" + pdata;
 
-    return <div className="cta-content-legal-links"><a target="_blank" href={data.folder + "privacy/?d=" + pdata}>For Terms & Privacy Policy, please visit {data.folder + "privacy/?d=" + pdata}</a></div>;
+    return <div className="cta-content-legal-links"><a target="_blank" href={url}>For Terms & Privacy Policy, please visit {url}</a></div>;
+  }
+
+  generateTPLinks = () => {
+    const {data} = this.props;
+
+    let urlT = null;
+    let urlP = null;
+
+    data.shortTerms ? urlT = data.shortTerms : urlT = data.terms;
+    data.shortPrivacy ? urlP = data.shortPrivacy : urlP = data.privacy;
+
+    return <div className="cta-content-legal-links"><div><a target="_blank" href={urlP}>For Privacy Policy, visit {urlP}</a></div><div><a target="_blank" href={urlT}>For Terms & Conditions visit {urlT}</a></div></div>
   }
 
   b64EncodeUnicode = (str) => {
@@ -210,7 +221,7 @@ class LightPreview extends Component {
                 :
                 ''}
               {data.customPrivacy ?
-                (data.privacy && data.terms) ? <div className="cta-content-legal-links"><div><a target="_blank" href={data.privacy}>For Privacy Policy, visit {data.privacy}</a></div><div><a target="_blank" href={data.terms}>For Terms & Conditions visit {data.terms}</a></div></div> : <div className="cta-legal-toggler">Setup legal footnote</div>
+                (data.privacy && data.terms) ? this.generateTPLinks() : <div className="cta-legal-toggler">Setup legal footnote</div>
                 :
                 (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
               }

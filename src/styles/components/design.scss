@@ -439,6 +439,7 @@
 
       .cta-content-unsubscribe {
         margin-bottom: $margin;
+        line-height: 150%;
       }
 
       .cta-legal-toggler {
@@ -455,6 +456,10 @@
 
       .cta-content-legal-links {
 
+        >div {
+          line-height: 150%;
+        }
+        
         transition: opacity $transition ease;
 
         &.disabled{

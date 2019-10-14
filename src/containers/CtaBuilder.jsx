@@ -16,11 +16,17 @@ import TriggerButtonTab from "../components/TriggerButtonTab";
 import SocialShare from "../components/SocialShare";
 import ExportTab from "../components/ExportTab";
 import LightPreview from "../components/LightPreview";
+import {validateEmail, validURL} from '../utils/utils';
+import shortLinks from "../services/shortLinks";
 import { LAYOUT_NAMES } from "../defines";
 
 class CtaBuilder extends Component {
   constructor(props) {
     super(props);
+
+    this.shortTP = new shortLinks();
+    this.shortT = new shortLinks();
+    this.shortP = new shortLinks();
 
     this.state = {
       isLayoutChoose: false,
@@ -101,6 +107,9 @@ class CtaBuilder extends Component {
         closePosition: "cta-close-tr",
         keyword: '',
         phone: '',
+        shortTerms: '',
+        shortTermsPrivacy: '',
+        shortPrivacy: '',
 
         mainButtonFont: 'Raleway',
         mainButtonFontColor: '#333333',
@@ -307,9 +316,40 @@ class CtaBuilder extends Component {
   }
 
   onExportToggle = () => {
-    const { isExportTab } = this.state;
+    const { isExportTab, data } = this.state;
     if (!isExportTab) this.setTooltip("isExportTooltip");
-    this.setState({ isExportTab: !isExportTab });
+    this.setState({ isExportTab: !isExportTab }, ()=>{
+
+      if(!isExportTab) {
+
+        if (data.customPrivacy) {
+
+          if(validURL(data.privacy)) this.shortP.set(data.privacy, (link)=>{
+            data.shortPrivacy = link;
+          });
+
+          if(validURL(data.terms)) this.shortP.set(data.terms, (link)=>{
+            data.shortTerms = link;
+          });
+
+        } else{
+
+          let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
+          let url = data.folder + "privacy/?d=" + pdata;
+  
+          if(validateEmail(data.email) && (data.company.length > 0)) this.shortTP.set(url, (link)=>{
+            data.shortTermsPrivacy = link;
+          });
+        }
+      }
+    });
+  }
+
+  b64EncodeUnicode = (str) => {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+      function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+      }));
   }
 
   onExportTabClose = () => {

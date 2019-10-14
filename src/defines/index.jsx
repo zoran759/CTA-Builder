@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 export const services = {
-  shortLinksKey: "AIzaSyA8Nm6oDG9n620UdTHfXww3xhBtW2yekq8"
+  shortLinksKey: "AIzaSyA8Nm6oDG9n620UdTHfXww3xhBtW2yekq8",
+  shortLinksDomain: "https://txturl.io"
 }
 
 export const LAYOUT_NAMES = [
