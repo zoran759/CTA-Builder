@@ -121,6 +121,7 @@ class CtaViewer extends Component {
       data ?
         <div className="cta-viewer" style={{display:display}}>
           <Preview 
+          setTooltip = {()=>{}}
           onRemindLater={this.onRemindLater}
           onDontShow = {this.onDontShow}
           isDesign={false}

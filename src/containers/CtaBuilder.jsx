@@ -200,7 +200,7 @@ class CtaBuilder extends Component {
     });
 
     document.addEventListener("click", (e) => {
-      if (e.target.closest('.cta-edittab') == null && e.target.closest('.cta-content-container') == null) {
+      if (e.target.closest('.cta-edittab') == null && e.target.closest('.cta-content-container') == null && e.target.closest('.pcr-app') == null) {
         this.onCloseTabs();
       }
     });

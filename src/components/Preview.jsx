@@ -102,11 +102,11 @@ class Preview extends Component {
   }
 
   onTrigger = () => {
-    const { isModal } = this.state;
+    const { isModal, isProduction } = this.state;
     const { setTooltip } = this.props;
     this.setState({ isModal: !isModal });
 
-    setTooltip("isTriggerButtonTooltip");
+    if (!isProduction) setTooltip("isTriggerButtonTooltip");
   }
 
   onClose = () => {
@@ -147,6 +147,13 @@ class Preview extends Component {
     let url = data.folder + "privacy/?d=" + pdata;
 
     return <div className={`cta-content-legal-links ${!validateEmail(data.email) ? "disabled" : ''}`}><a target="_blank" href={url}>Terms & Privacy Policy Information</a></div>;
+  }
+
+  generateSMSLink = () => {
+    const {data} = this.props;
+
+    return "sms:"+data.phone+"&body="+data.keyword;
+
   }
 
   b64EncodeUnicode = (str) => {
@@ -208,7 +215,7 @@ class Preview extends Component {
                 {
                   this.ifFlyoutButton() ?
                     (
-                      <div className={`cta-content-button main ${isDesktop ? "d-none" : ''} ${data.mainButtonType} ${data.mainButtonAlign}`} style={{
+                      <a href={this.generateSMSLink()} className={`cta-content-button main ${isDesktop ? "d-none" : ''} ${data.mainButtonType} ${data.mainButtonAlign}`} style={{
                         background: data.mainButtonBackground,
                         color: data.mainButtonFontColor,
                         fontFamily: data.mainButtonFont,
@@ -220,7 +227,7 @@ class Preview extends Component {
                         fontStyle: data.mainButtonItalic
                       }}>
                         {data.mainButtonLabel || data.mainButtonIcon ? data.mainButtonIcon ? <><i className={data.mainButtonIcon}></i>{data.mainButtonLabel}</> : <>{data.mainButtonLabel}</> : <span>Main button not configured</span>}
-                      </div>
+                      </a>
                     ) : ''
                 }
               </div>
@@ -239,7 +246,7 @@ class Preview extends Component {
               </div>
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
-              <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && this.ifTriggerAvailable()} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" />
+              {!isProduction ? <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && this.ifTriggerAvailable()} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" /> : ''}
               <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
