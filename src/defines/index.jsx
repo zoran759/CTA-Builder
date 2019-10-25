@@ -1,5 +1,29 @@
 import React, { Component } from "react";
 
+export const APP_CONFIG = {
+  isFullFontsList: false,
+  fonts:[
+    {value: "Alegreya", label: "Alegreya"},
+    {value: "BioRhyme", label: "BioRhyme"},
+    {value: "Crimson Text", label: "Crimson Text"},
+    {value: "Fira Sans", label: "Fira Sans"},
+    {value: "Libre Baskerville", label: "Libre Baskerville"},
+    {value: "Lora", label: "Lora"},
+    {value: "Montserrat", label: "Montserrat"},
+    {value: "Open Sans", label: "Open Sans"},
+    {value: "Playfair Display", label: "Playfair Display"},
+    {value: "Poppins", label: "Poppins"},
+    {value: "PT Sans", label: "PT Sans"},
+    {value: "PT Serif", label: "PT Serif"},
+    {value: "Roboto", label: "Roboto"},
+    {value: "Roboto Slab", label: "Roboto Slab"},
+    {value: "Rounded Mplus 1c", label: "Rounded Mplus 1c"},
+    {value: "Rubik", label: "Rubik"},
+    {value: "Source Serif Pro", label: "Source Serif Pro"},
+    {value: "Varela Round", label: "Varela Round"},
+  ]
+}
+
 export const services = {
   shortLinksKey: "AIzaSyA8Nm6oDG9n620UdTHfXww3xhBtW2yekq8",
   shortLinksDomain: "https://txturl.io"

@@ -4,7 +4,7 @@ import Pickr from '@simonwep/pickr';
 import { SWATCHES, PICKR_CONFIG } from "../defines";
 import ReactTooltip from 'react-tooltip'
 
-class CallToActionTab extends Component {
+class SecondaryTextTab extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,7 @@ class CallToActionTab extends Component {
     this.pickerC = Pickr.create({
       el: this.colorPickr.current,
       theme: PICKR_CONFIG.THEME,
-      default: data.color,
+      default: data.secondaryColor,
       swatches: SWATCHES,
       components: PICKR_CONFIG.COMPONENTS,
       strings: PICKR_CONFIG.SAVE
@@ -34,20 +34,20 @@ class CallToActionTab extends Component {
     this.pickerC.on('change', (color) => {
       if (!this.isTypeColor) {
         this.pickerC.setColor(String(color.toHEXA()));
-        data.color = "#" + color.toHEXA().join('');
+        data.secondaryColor = "#" + color.toHEXA().join('');
         onUpdate(data)
       }
     })
 
     this.pickerC.on('clear', () => {
-      data.color = '';
+      data.secondaryColor = '';
       onUpdate(data)
     })
   }
 
   onFontChange = selectedOption => {
     const { onFontchange, onUpdate, data } = this.props;
-    data.font = selectedOption.label;
+    data.secondaryFont = selectedOption.label;
     onFontchange(selectedOption.label);
     onUpdate(data);
   };
@@ -57,7 +57,7 @@ class CallToActionTab extends Component {
 
     this.isTypeColor = true;
 
-    data.color = e.target.value;
+    data.secondaryColor = e.target.value;
     onUpdate(data);
 
     e.target.value.length > 0 ? this.pickerC.setColor(e.target.value) : this.pickerC.setColor(null)
@@ -76,19 +76,19 @@ class CallToActionTab extends Component {
     return (
       <div className="cta-tab-content">
         <div className="cta-group-title">
-          <h2>Call-to-action text</h2>
+          <h2>Secondary Text</h2>
         </div>
         <div className="cta-tab active">
           <div className="cta-group bb-0">
             <textarea
               rows="3"
-              defaultValue={data.reason}
-              onChange={(e) => { data.reason = e.target.value; onUpdate(data) }}
-              placeholder="Tell people how and why they should subscribe to your list. E.g. Text PIZZA to 555888 for 50% off your next order.">
+              defaultValue={data.secondaryReason}
+              onChange={(e) => { data.secondaryReason = e.target.value; onUpdate(data) }}
+              placeholder="Are there any other details your subscribers should know about? E.g. We’ll also send you a special pizza deal every Tuesday.">
             </textarea>
             <label>Font family</label>
             <Select
-              value={{ value: data.font, label: data.font }}
+              value={{ value: data.secondaryFont, label: data.secondaryFont }}
               onChange={this.onFontChange}
               options={fontsList}
               className={"cta-select"}
@@ -99,15 +99,15 @@ class CallToActionTab extends Component {
                 <label>Color</label>
                 <div className="cta-color-input">
                   <div className="color-picker" ref={this.colorPickr}></div>
-                  <input type="text" value={data.color} onChange={this.onChangeColor} placeholder="None" />
+                  <input type="text" value={data.secondaryColor} onChange={this.onChangeColor} placeholder="None" />
                 </div>
               </div>
               <div>
                 <label>Font size</label>
                 <div className="cta-size-input">
                   <input
-                    value={data.size}
-                    onChange={(e) => { data.size = e.target.value; onUpdate(data) }}
+                    value={data.secondarySize}
+                    onChange={(e) => { data.secondarySize = e.target.value; onUpdate(data) }}
                     type="number"
                     placeholder=""
                   />
@@ -116,22 +116,22 @@ class CallToActionTab extends Component {
             </div>
             <div className="cta-inline btn-icons">
               <div>
-                <div data-tip="Align left" className={`cta-btn-icon ${data.reasonAlign == 'left' ? 'active' : ''}`} onClick={() => { data.reasonAlign = "left"; onUpdate(data) }}>
+                <div data-tip="Align left" className={`cta-btn-icon ${data.secondaryReasonAlign == 'left' ? 'active' : ''}`} onClick={() => { data.secondaryReasonAlign = "left"; onUpdate(data) }}>
                   <i className="icon-text-left"></i>
                 </div>
                 <ReactTooltip place="bottom" className="tolltip-basic" effect="solid" />
-                <div data-tip="Align center" className={`cta-btn-icon ${data.reasonAlign == 'center' ? 'active' : ''}`} onClick={() => { data.reasonAlign = "center"; onUpdate(data) }}>
+                <div data-tip="Align center" className={`cta-btn-icon ${data.secondaryReasonAlign == 'center' ? 'active' : ''}`} onClick={() => { data.secondaryReasonAlign = "center"; onUpdate(data) }}>
                   <i className="icon-text-center"></i>
                 </div>
-                <div data-tip="Align right" className={`cta-btn-icon ${data.reasonAlign == 'right' ? 'active' : ''}`} onClick={() => { data.reasonAlign = "right"; onUpdate(data) }}>
+                <div data-tip="Align right" className={`cta-btn-icon ${data.secondaryReasonAlign == 'right' ? 'active' : ''}`} onClick={() => { data.secondaryReasonAlign = "right"; onUpdate(data) }}>
                   <i className="icon-text-right"></i>
                 </div>
               </div>
               <div>
-                <div data-tip="Font weight bold" className={`cta-btn-icon ${data.reasonWeight == "bold" ? 'active' : ''}`} onClick={() => { data.reasonWeight == "bold" ? data.reasonWeight = '' : data.reasonWeight = "bold"; onUpdate(data) }}>
+                <div data-tip="Font weight bold" className={`cta-btn-icon ${data.secondaryReasonWeight == "bold" ? 'active' : ''}`} onClick={() => { data.secondaryReasonWeight == "bold" ? data.secondaryReasonWeight = '' : data.secondaryReasonWeight = "bold"; onUpdate(data) }}>
                   <i className="icon-bold"></i>
                 </div>
-                <div data-tip="Font style italic" className={`cta-btn-icon ${data.reasonItalic == "italic" ? 'active' : ''}`} onClick={() => {data.reasonItalic == "italic" ? data.reasonItalic = '' : data.reasonItalic = "italic"; onUpdate(data) }}>
+                <div data-tip="Font style italic" className={`cta-btn-icon ${data.secondaryReasonItalic == "italic" ? 'active' : ''}`} onClick={() => {data.secondaryReasonItalic == "italic" ? data.secondaryReasonItalic = '' : data.secondaryReasonItalic = "italic"; onUpdate(data) }}>
                   <i className="icon-italic"></i>
                 </div>
               </div>
@@ -143,4 +143,4 @@ class CallToActionTab extends Component {
   }
 }
 
-export default CallToActionTab;
+export default SecondaryTextTab;

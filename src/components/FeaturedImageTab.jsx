@@ -35,7 +35,7 @@ class FeaturedImageTab extends Component {
               type="text"
               placeholder="example.com"
             />
-            <div className="btn-icons">
+            <div className="btn-icons mb-d">
               <label>Align</label>
               <div className="w-100">
                 <div data-tip="Align full width" className={`cta-btn-icon ${data.imageStyle == 'full-width' ? 'active' : ''}`} onClick={() => { data.imageStyle = "full-width"; onUpdate(data) }}>
@@ -56,6 +56,8 @@ class FeaturedImageTab extends Component {
                 </div>
               </div>
             </div>
+            <label>Max. width</label>
+            <div className="cta-size-input w-25"><input type="number" value={data.imageWidth} onChange={(e) => { data.imageWidth = e.target.value; onUpdate(data) }} placeholder="" /></div>
           </div>
         </div>
       </div>

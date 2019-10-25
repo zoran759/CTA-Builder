@@ -3,7 +3,7 @@ import DropDown from "../components/DropDown";
 import { LAYOUT_NAMES } from "../defines";
 import ReactTooltip from 'react-tooltip';
 import ToolTip from "../components/ToolTip";
-import {validateEmail, validURL} from '../utils/utils';
+import { validateEmail, validURL } from '../utils/utils';
 
 let isMounted = false;
 
@@ -113,9 +113,14 @@ class Preview extends Component {
     this.setState({ isModal: false });
   }
 
-  ifTriggerAvailable = () => {
+  ifFlyoutAvailable = () => {
     const { data } = this.props;
     return (data.triggerButtonLabel || data.triggerButtonIcon);
+  }
+
+  ifTriggerAvailable = () => {
+    const { data } = this.props;
+    return (data.textUsButtonLabel || data.textUsButtonIcon);
   }
 
   onCloseTriger = () => {
@@ -133,16 +138,16 @@ class Preview extends Component {
   onLater = () => {
     const { onRemindLater } = this.props;
     onRemindLater();
-    this.setState({isOpenDropDown:false});
+    this.setState({ isOpenDropDown: false });
   }
   onDont = () => {
     const { onDontShow } = this.props;
-    this.setState({isOpenDropDown:false});
+    this.setState({ isOpenDropDown: false });
     onDontShow();
   }
 
   generateLink = () => {
-    const {data} = this.props;
+    const { data } = this.props;
     let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
     let url = data.folder + "privacy/?d=" + pdata;
 
@@ -150,9 +155,14 @@ class Preview extends Component {
   }
 
   generateSMSLink = () => {
-    const {data} = this.props;
+    const { data } = this.props;
+    return "sms:" + data.phone + "&body=" + data.keyword;
 
-    return "sms:"+data.phone+"&body="+data.keyword;
+  }
+
+  generateSMSLinkContact = () => {
+    const { data } = this.props;
+    return "sms:" + data.textUsButtonNumber + "&body=" + data.textUsButtonText;
 
   }
 
@@ -185,11 +195,11 @@ class Preview extends Component {
             style={!this.ifOnlyImage() ? {
               bottom: Number(behavior.bottom) + "px",
               left: Number(behavior.left) + 16 + "px",
-              right: behavior.right + 16 + "px"
+              right: Number(behavior.right) + 16 + "px"
             } : {}}
           >
             <div
-              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''} ${(!data.logo || data.logo == "http://" || data.logo == "https://") && data.image ? "without-logo" : ''}`}
+              className={`cta-content ${isModal || this.ifOnlyImage() ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''} ${(!data.logo || data.logo == "http://" || data.logo == "https://") ? "without-logo" : ''} ${data.image != "http://" ? "with-image" : ''}`}
               style={{
                 width: data.width + "px",
                 background: data.background,
@@ -205,11 +215,14 @@ class Preview extends Component {
               </div>
               <div className={`cta-blocks ${data.imageAlign} ${data.imageStyle}`}>
                 <div className={`cta-block cta-content-image ${data.image && data.image != "http://" && data.image != "https://" ? "filed" : ''} ${data.imageAlign} ${data.imageStyle}`}>
-                  {data.image && data.image != "http://" && data.image != "https://" ? <img src={data.image} /> : <div><div>Header image <span className="cta-optional">(optional)</span></div></div>}
+                  {data.image && data.image != "http://" && data.image != "https://" ? <img src={data.image} style={{ width: data.imageWidth + "px" }} /> : <div><div>Header image <span className="cta-optional">(optional)</span></div></div>}
                 </div>
                 <div className={`cta-block cta-content-text ${data.reason ? "filed" : ''}`} style={{ fontSize: data.size + "px", fontFamily: data.font, color: data.color, fontWeight: data.reasonWeight, fontStyle: data.reasonItalic, textAlign: data.reasonAlign }}>
                   {data.reason.length > 0 ? data.reason : <div><div>Add Call to action text</div></div>}
                 </div>
+              </div>
+              <div className={`cta-block cta-content-text ${data.secondaryReason ? "filed" : ''}`} style={{ fontSize: data.secondarySize + "px", fontFamily: data.secondaryFont, color: data.secondaryColor, fontWeight: data.secondaryReasonWeight, fontStyle: data.secondaryReasonItalic, textAlign: data.secondaryReasonAlign }}>
+                {data.secondaryReason.length > 0 ? data.secondaryReason : <div><div>Add Call to action text</div></div>}
               </div>
               <div style={{ textAlign: data.mainButtonAlign }}>
                 {
@@ -246,8 +259,8 @@ class Preview extends Component {
               </div>
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
-              {!isProduction ? <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && this.ifTriggerAvailable()} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" /> : ''}
-              <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
+              {!isProduction ? <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && (this.ifTriggerAvailable() || this.ifFlyoutAvailable())} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" /> : ''}
+              <div className={`cta-btn-close cta-dropdown-toggler ${(!this.ifTriggerAvailable() && !this.ifFlyoutAvailable()) ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
                 <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
@@ -255,7 +268,7 @@ class Preview extends Component {
                 <div className="cta-dropdown-link" data-tip={`${!isProduction ? "Buttons disabled in preview" : ''}`} data-for='dropdown' onClick={this.onDont}><span>Don’t show this again</span></div>
               </DropDown>
               {
-                !this.ifOnlyImage() ?
+                !this.ifOnlyImage() && this.ifFlyoutButton() ?
                   (
                     <div
                       onClick={this.onTrigger}
@@ -271,8 +284,29 @@ class Preview extends Component {
                         fontWeight: data.triggerButtonWeight,
                         fontStyle: data.triggerButtonItalic
                       }}>
-                      {this.ifTriggerAvailable() ? data.triggerButtonIcon ? <><i className={data.triggerButtonIcon}></i>{data.triggerButtonLabel}</> : <>{data.triggerButtonLabel}</> : <span>Trigger button not configured</span>}
+                      {this.ifFlyoutAvailable() ? data.triggerButtonIcon ? <><i className={data.triggerButtonIcon}></i>{data.triggerButtonLabel}</> : <>{data.triggerButtonLabel}</> : <span>Trigger button not configured</span>}
                     </div>
+                  ) : ''
+              }
+              {
+                !this.ifOnlyImage() && this.ifTriggerButton() ?
+                  (
+                    <a href={this.generateSMSLinkContact()}
+                      onClick={this.onTrigger}
+                      className={`cta-content-button trigger ${(isDesktop && !behavior.displayOnDesktop) ? "d-none" : ''} ${(!isDesktop && !behavior.displayOnMobile) ? "d-none" : ''} ${data.textUsButtonType} ${data.textUsButtonAlign} ${(!data.textUsButtonLabel && !data.textUsButtonIcon) ? "disabled" : ''}`}
+                      style={{
+                        background: data.textUsButtonBackground,
+                        color: data.textUsButtonFontColor,
+                        fontFamily: data.textUsButtonFont,
+                        borderRadius: data.textUsButtonCorner + "px",
+                        borderColor: data.textUsButtonStroke,
+                        boxShadow: data.textUsButtonShadow,
+                        fontSize: data.textUsButtonFontSize + "px",
+                        fontWeight: data.textUsButtonWeight,
+                        fontStyle: data.textUsButtonItalic
+                      }}>
+                      {this.ifTriggerAvailable() ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Click-to-action button not configured</span>}
+                    </a>
                   ) : ''
               }
             </div>

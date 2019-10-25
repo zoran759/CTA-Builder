@@ -7,18 +7,20 @@ import EditTab from "../components/EditTab";
 import Preview from "../components/Preview";
 import Design from "../components/Design";
 import CallToActionTab from "../components/CallToActionTab";
+import SecondaryTextTab from "../components/SecondaryTextTab";
 import ComplianceTab from "../components/ComplianceTab";
 import BackgroundTab from "../components/BackgroundTab";
 import LogoTab from "../components/LogoTab";
 import FeaturedImageTab from "../components/FeaturedImageTab";
 import MainButtonTab from "../components/MainButtonTab";
 import TriggerButtonTab from "../components/TriggerButtonTab";
+import ContactUsButtonTab from "../components/ContactUsButtonTab";
 import SocialShare from "../components/SocialShare";
 import ExportTab from "../components/ExportTab";
 import LightPreview from "../components/LightPreview";
-import {validateEmail, validURL} from '../utils/utils';
+import { validateEmail, validURL } from '../utils/utils';
 import shortLinks from "../services/shortLinks";
-import { LAYOUT_NAMES } from "../defines";
+import { LAYOUT_NAMES, APP_CONFIG } from "../defines";
 
 class CtaBuilder extends Component {
   constructor(props) {
@@ -47,6 +49,7 @@ class CtaBuilder extends Component {
         isTriggerOnlyTooltip: true,
       },
       tabs: {
+        isSecondaryTextTab: false,
         isCallToActionTab: false,
         isComplianceTab: false,
         isBackgroundTab: false,
@@ -54,6 +57,7 @@ class CtaBuilder extends Component {
         isFeaturedImageTab: false,
         isMainButtonTab: false,
         isTriggerButtonTab: false,
+        isContactUsButtonTab: false,
       },
       behavior: {
         displayOnDesktop: true,
@@ -67,17 +71,27 @@ class CtaBuilder extends Component {
       },
       data: {
         folder: window.location.href,
+        size: 22,
+        color: '#333333',
+        font: 'PT Sans',
         reason: '',
         reasonAlign: 'left',
         reasonWeight: '',
         reasonItalic: '',
+        secondarySize: 22,
+        secondaryFont: 'PT Sans',
+        secondaryColor: '#333333',
+        secondaryReason: '',
+        secondaryReasonAlign: 'left',
+        secondaryReasonWeight: '',
+        secondaryReasonItalic: '',
         company: '',
         estimated: 1,
         email: '',
         customPrivacy: false,
         terms: '',
         privacy: '',
-        complianceFont: 'Raleway',
+        complianceFont: 'PT Sans',
         complianceSize: 14,
         complianceColor: '#75849c',
         complianceAlign: 'left',
@@ -88,20 +102,17 @@ class CtaBuilder extends Component {
         logoAlign: 'left',
         logoMaxWidth: 100,
         hyperlink: '',
-        image: '',
-        imageWidth: '',
+        image: 'http://',
+        imageWidth: 500,
         imageAlign: 'center',
         imageStyle: 'boxed',
         position: 'cta-boxed',
-        color: '#333333',
         colorA: '#75849C',
         stroke: '',
         background: '#FFFFFF',
         corner: 8,
         shadow: '0px 16px 64px rgba(0,0,0,0.08)',
-        font: 'Raleway',
-        size: 22,
-        fontA: 'Raleway',
+        fontA: 'PT Sans',
         sizeA: 16,
         width: 500,
         closePosition: "cta-close-tr",
@@ -111,21 +122,21 @@ class CtaBuilder extends Component {
         shortTermsPrivacy: '',
         shortPrivacy: '',
 
-        mainButtonFont: 'Raleway',
+        mainButtonFont: 'PT Sans',
         mainButtonFontColor: '#333333',
         mainButtonFontSize: 16,
         mainButtonAlign: "center",
         mainButtonWeight: '',
         mainButtonItalic: '',
-        mainButtonShadow: '0px 16px 64px rgba(0,0,0,0.08)',
+        mainButtonShadow: '0px 0px 0px rgba(0,0,0,0.0)',
         mainButtonCorner: 8,
         mainButtonStroke: "#e0e3e9",
-        mainButtonBackground: "#FFFFFF",
+        mainButtonBackground: "transparent",
         mainButtonLabel: "",
         mainButtonType: "cta-label-textonly",
         mainButtonIcon: "",
 
-        triggerButtonFont: 'Raleway',
+        triggerButtonFont: 'PT Sans',
         triggerButtonFontColor: '#333333',
         triggerButtonFontSize: 16,
         triggerButtonAlign: "right",
@@ -137,7 +148,23 @@ class CtaBuilder extends Component {
         triggerButtonBackground: "transparent",
         triggerButtonLabel: "",
         triggerButtonType: "cta-label-textonly",
-        triggerButtonIcon: ""
+        triggerButtonIcon: "",
+
+        textUsButtonNumber: '',
+        textUsButtonText: '',
+        textUsButtonFont: 'PT Sans',
+        textUsButtonFontColor: '#333333',
+        textUsButtonFontSize: 16,
+        textUsButtonAlign: "right",
+        textUsButtonWeight: '',
+        textUsButtonItalic: '',
+        textUsButtonShadow: '0px 16px 64px rgba(0,0,0,0.08)',
+        textUsButtonCorner: 8,
+        textUsButtonStroke: "#e0e3e9",
+        textUsButtonBackground: "transparent",
+        textUsButtonLabel: "",
+        textUsButtonType: "cta-label-textonly",
+        textUsButtonIcon: ""
       }
     };
 
@@ -148,6 +175,8 @@ class CtaBuilder extends Component {
     this.buildFontList();
     this.events();
     this.setTooltips();
+
+    this.onFontchange(this.state.data.font);
 
     setTimeout(() => {
       document.querySelector("#loader").style.display = "none";
@@ -160,9 +189,9 @@ class CtaBuilder extends Component {
 
   setTooltip = (tooltip) => {
 
-    const {toolTips} = this.state;
+    const { toolTips } = this.state;
 
-    localStorage.setItem('cta-builder-'+tooltip, "viewed")
+    localStorage.setItem('cta-builder-' + tooltip, "viewed")
 
     toolTips[tooltip] = false;
 
@@ -171,11 +200,11 @@ class CtaBuilder extends Component {
   setTooltips = () => {
 
     let isCallToActionTooltip = localStorage.getItem('cta-builder-isCallToActionTooltip') == "viewed" ? false : true;
-    let isMainButtonTooltip = localStorage.getItem('cta-builder-isMainButtonTooltip')  == "viewed" ? false : true;
-    let isPreviewTooltip = localStorage.getItem('cta-builder-isPreviewTooltip')  == "viewed" ? false : true;
-    let isTriggerButtonTooltip = localStorage.getItem('cta-builder-isTriggerButtonTooltip')  == "viewed" ? false : true;
-    let isExportTooltip = localStorage.getItem('cta-builder-isExportTooltip')  == "viewed" ? false : true;
-    let isTriggerOnlyTooltip = localStorage.getItem('cta-builder-isTriggerOnlyTooltip')  == "viewed" ? false : true;
+    let isMainButtonTooltip = localStorage.getItem('cta-builder-isMainButtonTooltip') == "viewed" ? false : true;
+    let isPreviewTooltip = localStorage.getItem('cta-builder-isPreviewTooltip') == "viewed" ? false : true;
+    let isTriggerButtonTooltip = localStorage.getItem('cta-builder-isTriggerButtonTooltip') == "viewed" ? false : true;
+    let isExportTooltip = localStorage.getItem('cta-builder-isExportTooltip') == "viewed" ? false : true;
+    let isTriggerOnlyTooltip = localStorage.getItem('cta-builder-isTriggerOnlyTooltip') == "viewed" ? false : true;
 
     this.setState({
       toolTips: {
@@ -209,7 +238,7 @@ class CtaBuilder extends Component {
     });
 
     document.addEventListener("click", (e) => {
-      if (e.target.closest('.cta-edittab') == null && e.target.closest('.cta-content-container') == null && e.target.closest('.pcr-app') == null) {
+      if (e.target.closest('.cta-edittab') == null && e.target.closest('.cta-content-container') == null && e.target.closest('.pcr-app') == null && e.target.closest('.cta-select__menu') == null) {
         this.onCloseTabs();
       }
     });
@@ -235,13 +264,17 @@ class CtaBuilder extends Component {
 
   buildFontList = () => {
 
-    let xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = () => {
-      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-        this.parseFonts(xmlHttp.responseText);
+    if (APP_CONFIG.isFullFontsList) {
+      let xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = () => {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+          this.parseFonts(xmlHttp.responseText);
+      }
+      xmlHttp.open("GET", "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAOR6q9DsvkdMf-FiTVeE0MWDAfWCiT91k", true);
+      xmlHttp.send(null);
+    } else {
+      this.setState({ fontsList: APP_CONFIG.fonts });
     }
-    xmlHttp.open("GET", "https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyAOR6q9DsvkdMf-FiTVeE0MWDAfWCiT91k", true);
-    xmlHttp.send(null);
   }
 
   addStyle = (url) => {
@@ -275,7 +308,7 @@ class CtaBuilder extends Component {
 
   onViewChange = (is) => {
     this.onCloseTabs();
-    if(!is) this.setTooltip("isPreviewTooltip");
+    if (!is) this.setTooltip("isPreviewTooltip");
     this.setState({ isDesign: is });
   }
 
@@ -298,6 +331,7 @@ class CtaBuilder extends Component {
 
   onUpdateTabs = (tabs) => {
     if (tabs.isCallToActionTab) this.setTooltip("isCallToActionTooltip");
+    if (tabs.isSecondaryTextTab) this.setTooltip("isSecondaryTextTooltip");
     if (tabs.isMainButtonTab) this.setTooltip("isMainButtonTooltip");
     this.setState({ tabs });
   }
@@ -318,26 +352,26 @@ class CtaBuilder extends Component {
   onExportToggle = () => {
     const { isExportTab, data } = this.state;
     if (!isExportTab) this.setTooltip("isExportTooltip");
-    this.setState({ isExportTab: !isExportTab }, ()=>{
+    this.setState({ isExportTab: !isExportTab }, () => {
 
-      if(!isExportTab) {
+      if (!isExportTab) {
 
         if (data.customPrivacy) {
 
-          if(validURL(data.privacy)) this.shortP.set(data.privacy, (link)=>{
+          if (validURL(data.privacy)) this.shortP.set(data.privacy, (link) => {
             data.shortPrivacy = link;
           });
 
-          if(validURL(data.terms)) this.shortP.set(data.terms, (link)=>{
+          if (validURL(data.terms)) this.shortP.set(data.terms, (link) => {
             data.shortTerms = link;
           });
 
-        } else{
+        } else {
 
           let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
           let url = data.folder + "privacy/?d=" + pdata;
-  
-          if(validateEmail(data.email) && (data.company.length > 0)) this.shortTP.set(url, (link)=>{
+
+          if (validateEmail(data.email) && (data.company.length > 0)) this.shortTP.set(url, (link) => {
             data.shortTermsPrivacy = link;
           });
         }
@@ -389,7 +423,7 @@ class CtaBuilder extends Component {
           toolTips={toolTips}
         />
         <div className="cta-view">
-          <Sidebar
+          {/* <Sidebar
             onClose={this.onCloseSidebar}
             onShow={this.onShowSidebar}
             behavior={behavior}
@@ -398,11 +432,18 @@ class CtaBuilder extends Component {
             isActive={(layoutName == LAYOUT_NAMES[1] || layoutName == LAYOUT_NAMES[2])}
             isSidebar={isSidebar}
             isDesign={isDesign}
-          />
+          /> */}
           <Design setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
-          <Preview setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
+          <Preview onDontShow={()=>{}} onRemindLater={()=>{}} setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab
+              data={data}
+              fontsList={fontsList}
+              onFontchange={this.onFontchange}
+              onUpdate={this.onUpdate} />
+          } />
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isSecondaryTextTab} content={
+            <SecondaryTextTab
               data={data}
               fontsList={fontsList}
               onFontchange={this.onFontchange}
@@ -440,7 +481,18 @@ class CtaBuilder extends Component {
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isTriggerButtonTab} content={
             <TriggerButtonTab
               data={data}
+              behavior={behavior}
               fontsList={fontsList}
+              onUpdateB={this.onBehaviorUpdate}
+              onFontchange={this.onFontchange}
+              onUpdate={this.onUpdate} />
+          } />
+          <EditTab onClose={this.onCloseTabs} isActive={tabs.isContactUsButtonTab} content={
+            <ContactUsButtonTab
+              data={data}
+              behavior={behavior}
+              fontsList={fontsList}
+              onUpdateB={this.onBehaviorUpdate}
               onFontchange={this.onFontchange}
               onUpdate={this.onUpdate} />
           } />

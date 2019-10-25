@@ -34,6 +34,55 @@
     opacity: 0.5;
   }
 
+  .cta-contus-button-container {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: -60px;
+    width: 100%;
+
+    .tolltip-basic  {
+      max-width: 140px;
+      text-align: center;
+    }
+
+    .cta-dropdown {
+      bottom: 0;
+      right: 0;
+      left: auto;
+      top: auto;
+      transform: translateY(0);
+      min-width: 200px;
+      text-align: left;
+      font-size: 0.8125rem;
+
+      >div {
+        height: 2rem;
+      }
+    }
+
+    &.cta-position-br {
+      text-align: right;
+    }
+    &.cta-position-bc {
+      text-align: center;
+    }
+    &.cta-position-bl {
+      text-align: left;
+    }
+
+    > .cta-btn-close {
+      position: absolute;
+      top: -1.2rem;
+      right: -1.2rem;
+      z-index: 1;
+
+      i{
+        font-size: 0.6rem;
+      }
+    }
+  }
+
   .cta-trigger-button-container {
     display: inline-block;
     position: absolute;
@@ -92,13 +141,13 @@
     height: 2.4rem;
     line-height: calc(2.4rem - 2px);
     padding: 0 1em;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     white-space: nowrap;
     justify-content: center;
     text-align: center;
     border: 1px solid $border-color;
-    margin-bottom: $margin;
+    margin-bottom: 2vh;
     outline: none;
     border-radius: $input-radius * 2;
     text-decoration: none;
@@ -284,6 +333,7 @@
       align-items: center;
       font-size: 0.8rem;
       cursor: pointer;
+      z-index: 1;
 
       &.cta-close-tl {
         left: 1rem;
@@ -307,6 +357,9 @@
     .cta-blocks {
       &.left,
       &.right {
+        .cta-content-text {
+          padding-top: $spacer;
+        }
         &.full-width {
           width: calc(100% + #{$spacer * 2});
           margin-left: -$spacer;
@@ -347,7 +400,7 @@
       border-radius: $input-radius * 2;
       cursor: pointer;
       transition: border $transition ease, background-color $transition ease;
-      margin-bottom: $spacer/2;
+      margin-bottom: 1.4vh;
       position: relative;
 
       &:hover {
@@ -407,17 +460,17 @@
       }
 
       > div:not(.cta-special-tooltip) {
-        min-height: 50px;
+        min-height: 5vh;
       }
     }
     .cta-content-image {
       > div:not(.cta-special-tooltip) {
-        min-height: 100px;
+        min-height: 10vh;
       }
     }
     .cta-content-text {
       > div:not(.cta-special-tooltip) {
-        min-height: 100px;
+        min-height: 10vh;
       }
     }
 
@@ -487,7 +540,7 @@
 
       overflow: hidden;
 
-      &.without-logo{
+      &.without-logo.with-image{
         padding-top: 0;
 
         .cta-content-image.boxed{

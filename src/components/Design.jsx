@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { LAYOUT_NAMES } from "../defines";
 import ToolTip from "../components/ToolTip";
-import {validateEmail, validURL} from '../utils/utils';
+import { validateEmail, validURL } from '../utils/utils';
 
 
 class Design extends Component {
@@ -18,7 +18,7 @@ class Design extends Component {
     }
     onUpdateTabs(tabs);
 
-    if(name == "isTriggerButtonTab" && this.ifTriggerButton) setTooltip("isTriggerOnlyTooltip");
+    if (name == "isTriggerButtonTab" && this.ifTriggerButton) setTooltip("isTriggerOnlyTooltip");
   }
 
   ifOnlyImage = () => {
@@ -37,7 +37,7 @@ class Design extends Component {
   }
 
   generateLink = () => {
-    const {data} = this.props;
+    const { data } = this.props;
     let pdata = this.b64EncodeUnicode(JSON.stringify({ email: data.email, company: data.company }));
     let url = data.folder + "privacy/?d=" + pdata;
 
@@ -63,40 +63,43 @@ class Design extends Component {
           <div className={`cta-content active ${this.ifTriggerButton() ? "d-none" : ''}`} style={{ width: data.width + "px", background: data.background, border: data.stroke ? data.stroke : "none", borderRadius: data.corner + "px", borderColor: data.stroke, boxShadow: data.shadow }}>
             <div className={`cta-content-close ${this.ifOnlyImage() ? "d-none" : ''} ${data.closePosition}`}><i className="icon-close"></i></div>
             <div className={`cta-block cta-content-logo ${data.logo && data.logo != "http://" && data.logo != "https://" ? "filed" : ''} ${data.logoAlign} ${data.logoStyle}`} onClick={() => { this.navigateToTab("isLogoTab") }}>
-              {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank" href={data.hyperlink ? data.hyperlink : "#"}><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
+              {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank"><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
             </div>
             <div className={`cta-blocks ${data.imageAlign} ${data.imageStyle}`}>
               <div className={`cta-block cta-content-image ${data.image && data.image != "http://" && data.image != "https://" ? "filed" : ''} ${data.imageAlign} ${data.imageStyle}`} onClick={() => { this.navigateToTab("isFeaturedImageTab") }}>
-                {data.image && data.image != "http://" && data.image != "https://" ? <img src={data.image} /> : <div><div>Header image <span className="cta-optional">(optional)</span></div></div>}
+                {data.image && data.image != "http://" && data.image != "https://" ? <img src={data.image} style={{ width: data.imageWidth + "px" }} /> : <div><div>Header image <span className="cta-optional">(optional)</span></div></div>}
               </div>
               <div className={`cta-block cta-content-text ${data.reason ? "filed" : ''}`} onClick={() => { this.navigateToTab("isCallToActionTab") }} style={{ fontSize: data.size + "px", fontFamily: data.font, color: data.color, fontWeight: data.reasonWeight, fontStyle: data.reasonItalic, textAlign: data.reasonAlign }}>
                 <ToolTip isActive={isDesign && toolTips.isCallToActionTooltip} text="Click the text block to edit the dummy content." type="left" />
                 {data.reason.length > 0 ? data.reason : <div><div>Add Call to action text</div></div>}
               </div>
             </div>
+            <div className={`cta-block cta-content-text ${data.secondaryReason ? "filed" : ''}`} onClick={() => { this.navigateToTab("isSecondaryTextTab") }} style={{ fontSize: data.secondarySize + "px", fontFamily: data.secondaryFont, color: data.secondaryColor, fontWeight: data.secondaryReasonWeight, fontStyle: data.secondaryReasonItalic, textAlign: data.secondaryReasonAlign }}>
+              {data.secondaryReason.length > 0 ? data.secondaryReason : <div><div>Add Secondary text <span className="cta-optional">(optional)</span></div></div>}
+            </div>
             <div style={{ textAlign: data.mainButtonAlign }}>
               {
                 this.ifFlyoutButton() ?
                   (
                     <>
-                    <div className={`cta-content-button main ${data.mainButtonType} ${data.mainButtonAlign}`} onClick={() => { this.navigateToTab("isMainButtonTab") }} style={{
-                      background: data.mainButtonBackground,
-                      color: data.mainButtonFontColor,
-                      fontFamily: data.mainButtonFont,
-                      borderRadius: data.mainButtonCorner + "px",
-                      borderColor: data.mainButtonStroke,
-                      boxShadow: data.mainButtonShadow,
-                      fontSize: data.mainButtonFontSize + "px",
-                      fontWeight: data.mainButtonWeight,
-                      fontStyle: data.mainButtonItalic
-                    }}>
-                      {(data.mainButtonLabel || data.mainButtonIcon) ? data.mainButtonIcon ? <><i className={data.mainButtonIcon}></i>{data.mainButtonLabel}</> : <>{data.mainButtonLabel}</> : <span>Setup main button</span>}
-                    </div>
-                    <ToolTip isActive={isDesign && toolTips.isMainButtonTooltip} text="Only used on mobile, to open the native SMS app" type="top" />
+                      <div className={`cta-content-button main ${data.mainButtonType} ${data.mainButtonAlign}`} onClick={() => { this.navigateToTab("isMainButtonTab") }} style={{
+                        background: data.mainButtonBackground,
+                        color: data.mainButtonFontColor,
+                        fontFamily: (data.mainButtonLabel || data.mainButtonIcon) ? data.mainButtonFont : '',
+                        borderRadius: data.mainButtonCorner + "px",
+                        borderColor: data.mainButtonStroke,
+                        boxShadow: data.mainButtonShadow,
+                        fontSize: data.mainButtonFontSize + "px",
+                        fontWeight: data.mainButtonWeight,
+                        fontStyle: data.mainButtonItalic
+                      }}>
+                        {(data.mainButtonLabel || data.mainButtonIcon) ? data.mainButtonIcon ? <><i className={data.mainButtonIcon}></i>{data.mainButtonLabel}</> : <>{data.mainButtonLabel}</> : <span>Setup main button</span>}
+                      </div>
+                      <ToolTip isActive={isDesign && toolTips.isMainButtonTooltip} text="Only used on mobile, to open the native SMS app" type="top" />
                     </>
                   ) : ''
               }
-              
+
             </div>
             <div className={`cta-content-legal ${(data.privacy && data.terms) || (data.company && data.email) ? "filed" : ''}`} onClick={() => { this.navigateToTab("isComplianceTab") }} style={{ fontSize: data.complianceSize + "px", fontFamily: data.complianceFont, color: data.complianceColor, fontWeight: data.complianceWeight, fontStyle: data.complianceItalic, textAlign: data.complianceAlign }}>
               {(data.privacy && data.terms) || (data.company && data.email) ?
@@ -115,12 +118,12 @@ class Design extends Component {
           <div className={`cta-trigger-button-container ${behavior.position}`}>
             <ToolTip isActive={isDesign && toolTips.isTriggerOnlyTooltip && this.ifTriggerButton()} text="Click the button to start editing it" type="middle-trigger" />
             {
-              !this.ifOnlyImage() ?
+              !this.ifOnlyImage() && this.ifFlyoutButton() ?
                 (
                   <div className={`cta-content-button trigger ${data.triggerButtonType} ${data.triggerButtonAlign}`} onClick={() => { this.navigateToTab("isTriggerButtonTab") }} style={{
                     background: data.triggerButtonBackground,
                     color: data.triggerButtonFontColor,
-                    fontFamily: data.triggerButtonFont,
+                    fontFamily: (data.triggerButtonLabel || data.triggerButtonIcon) ? data.triggerButtonFont : '',
                     borderRadius: data.triggerButtonCorner + "px",
                     borderColor: data.triggerButtonStroke,
                     boxShadow: data.triggerButtonShadow,
@@ -129,6 +132,26 @@ class Design extends Component {
                     fontStyle: data.triggerButtonItalic
                   }}>
                     {(data.triggerButtonLabel || data.triggerButtonIcon) ? data.triggerButtonIcon ? <><i className={data.triggerButtonIcon}></i>{data.triggerButtonLabel}</> : <>{data.triggerButtonLabel}</> : <span>Setup trigger button</span>}
+                  </div>
+                ) : ''
+            }
+          </div>
+          <div className={`cta-contus-button-container ${behavior.position}`}>
+            {
+              !this.ifOnlyImage() && this.ifTriggerButton() ?
+                (
+                  <div className={`cta-content-button trigger ${data.textUsButtonType} ${data.textUsButtonAlign}`} onClick={() => { this.navigateToTab("isContactUsButtonTab") }} style={{
+                    background: data.textUsButtonBackground,
+                    color: data.textUsButtonFontColor,
+                    fontFamily: (data.textUsButtonLabel || data.textUsButtonIcon) ? data.textUsButtonFont : '',
+                    borderRadius: data.textUsButtonCorner + "px",
+                    borderColor: data.textUsButtonStroke,
+                    boxShadow: data.textUsButtonShadow,
+                    fontSize: data.textUsButtonFontSize + "px",
+                    fontWeight: data.textUsButtonWeight,
+                    fontStyle: data.textUsButtonItalic
+                  }}>
+                    {(data.textUsButtonLabel || data.textUsButtonIcon) ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Setup click-to-action button</span>}
                   </div>
                 ) : ''
             }

@@ -7,7 +7,7 @@ import IconsSelect from "./IconsSelect";
 import { customSingleValue, customOptionValue } from "./UiComponents";
 import ReactTooltip from 'react-tooltip';
 
-class TriggerButtonTab extends Component {
+class ContactUsButtonTab extends Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +38,7 @@ class TriggerButtonTab extends Component {
     this.pickerC = Pickr.create({
       el: this.colorPickr.current,
       theme: PICKR_CONFIG.THEME,
-      default: data.triggerButtonFontColor,
+      default: data.textUsButtonFontColor,
       swatches: SWATCHES,
       components: PICKR_CONFIG.COMPONENTS,
       strings: PICKR_CONFIG.SAVE
@@ -47,20 +47,20 @@ class TriggerButtonTab extends Component {
     this.pickerC.on('change', (color) => {
       if (!this.isTypeColor) {
         this.pickerC.setColor(String(color.toHEXA()));
-        data.triggerButtonFontColor = "#" + color.toHEXA().join('');
+        data.textUsButtonFontColor = "#" + color.toHEXA().join('');
         onUpdate(data)
       }
     })
 
     this.pickerC.on('clear', () => {
-      data.triggerButtonFontColor = '';
+      data.textUsButtonFontColor = '';
       onUpdate(data)
     })
 
     this.pickerBG = Pickr.create({
       el: this.bgColorPickr.current,
       theme: PICKR_CONFIG.THEME,
-      default: data.triggerButtonBackground,
+      default: data.textUsButtonBackground,
       swatches: SWATCHES,
       components: PICKR_CONFIG.COMPONENTS,
       strings: PICKR_CONFIG.SAVE
@@ -69,20 +69,20 @@ class TriggerButtonTab extends Component {
     this.pickerBG.on('change', (color) => {
       if (!this.isTypeColor) {
         this.pickerBG.setColor(String(color.toHEXA()));
-        data.triggerButtonBackground = "#" + color.toHEXA().join('');
+        data.textUsButtonBackground = "#" + color.toHEXA().join('');
         onUpdate(data)
       }
     })
 
     this.pickerBG.on('clear', () => {
-      data.triggerButtonBackground = '';
+      data.textUsButtonBackground = '';
       onUpdate(data)
     })
 
     this.pickerSTR = Pickr.create({
       el: this.strColorPickr.current,
       theme: PICKR_CONFIG.THEME,
-      default: data.triggerButtonStroke,
+      default: data.textUsButtonStroke,
       swatches: SWATCHES,
       components: PICKR_CONFIG.COMPONENTS,
       strings: PICKR_CONFIG.SAVE
@@ -91,13 +91,13 @@ class TriggerButtonTab extends Component {
     this.pickerSTR.on('change', (color) => {
       if (!this.isTypeColor) {
         this.pickerSTR.setColor(String(color.toHEXA()));
-        data.triggerButtonStroke = "#" + color.toHEXA().join('');
+        data.textUsButtonStroke = "#" + color.toHEXA().join('');
         onUpdate(data)
       }
     })
 
     this.pickerSTR.on('clear', () => {
-      data.triggerButtonStroke = '';
+      data.textUsButtonStroke = '';
       onUpdate(data)
     })
   }
@@ -106,7 +106,7 @@ class TriggerButtonTab extends Component {
     const { data, onUpdate } = this.props;
 
     this.isTypeColor = true;
-    data.triggerButtonBackground = e.target.value;
+    data.textUsButtonBackground = e.target.value;
     onUpdate(data);
     e.target.value.length > 0 ? this.pickerBG.setColor(e.target.value) : this.pickerBG.setColor(null)
 
@@ -119,7 +119,7 @@ class TriggerButtonTab extends Component {
     const { data, onUpdate } = this.props;
 
     this.isTypeColor = true;
-    data.triggerButtonStroke = e.target.value;
+    data.textUsButtonStroke = e.target.value;
     onUpdate(data);
     e.target.value.length > 0 ? this.pickerSTR.setColor(e.target.value) : this.pickerSTR.setColor(null)
 
@@ -130,7 +130,7 @@ class TriggerButtonTab extends Component {
 
   onFontChange = selectedOption => {
     const { onFontchange, onUpdate, data } = this.props;
-    data.triggerButtonFont = selectedOption.label;
+    data.textUsButtonFont = selectedOption.label;
     onFontchange(selectedOption.label);
     onUpdate(data);
   };
@@ -151,7 +151,7 @@ class TriggerButtonTab extends Component {
 
   onShadowUpdate = (value) => {
     const { data, onUpdate } = this.props;
-    data.triggerButtonShadow = value;
+    data.textUsButtonShadow = value;
     onUpdate(data);
   }
 
@@ -159,7 +159,7 @@ class TriggerButtonTab extends Component {
     const { data } = this.props;
     let pos = {};
     BUTTONS_TYPES.forEach((position) => {
-      if (data.triggerButtonType == position.value) pos = position
+      if (data.textUsButtonType == position.value) pos = position
     })
 
     return pos;
@@ -171,13 +171,13 @@ class TriggerButtonTab extends Component {
 
   onTypeChange = (e) => {
     const { data, onUpdate } = this.props;
-    data.triggerButtonType = e.value;
+    data.textUsButtonType = e.value;
     onUpdate(data);
   }
 
   onIconChoose = (value) => {
     const { data, onUpdate } = this.props;
-    data.triggerButtonIcon = value;
+    data.textUsButtonIcon = value;
 
     onUpdate(data);
   }
@@ -208,18 +208,16 @@ class TriggerButtonTab extends Component {
         </div>
         <div className={`cta-tab ${tab == "settings" ? 'active' : ''}`}>
           <div className="cta-group bb-0">
-              <label>Display on</label>
-              <label className="checkbox text-default">
-                Desktop
-                <input name="custom-links" type="checkbox" checked={behavior.displayOnDesktop} onChange={(e) => { behavior.displayOnDesktop = !behavior.displayOnDesktop; onUpdateB(behavior) }} />
-                <span className="checkmark"></span>
-              </label>
-              <label className="checkbox text-default">
-                Mobile
-                <input name="custom-links" type="checkbox" checked={behavior.displayOnMobile} onChange={(e) => { behavior.displayOnMobile = !behavior.displayOnMobile; onUpdateB(behavior) }} />
-                <span className="checkmark"></span>
-              </label>
             <div>
+              <label>Number to send text</label>
+              <input type="text" value={data.textUsButtonNumber} onChange={(e) => { data.textUsButtonNumber = e.target.value; onUpdate(data) }} placeholder="eg: 555888" />
+              <label>Prefilled text</label>
+              <textarea
+                rows="3"
+                defaultValue={data.textUsButtonText}
+                onChange={(e) => { data.textUsButtonText = e.target.value; onUpdate(data) }}
+                placeholder="Keyword or default message...">
+              </textarea>
               <label>Position</label>
               <Select
                 value={this.getPositionValue()}
@@ -242,16 +240,6 @@ class TriggerButtonTab extends Component {
                 <div className="cta-size-input"><input type="number" value={behavior.right} onChange={(e) => { behavior.right = e.target.value; onUpdateB(behavior) }} placeholder="" /></div>
               </div>
             </div>
-              <label>Behavior</label>
-              <label className="checkbox text-default">
-                Auto-open on page load
-                <input name="custom-links" type="checkbox" checked={behavior.autoOpen} onChange={(e) => { behavior.autoOpen = !behavior.autoOpen; onUpdateB(behavior) }} />
-                <span className="checkmark"></span>
-              </label>
-              <div className={`cta-inline-label mb-d ${!behavior.autoOpen ? "disabled" : ''}`}>
-                <span>Delay</span>
-                <div className="cta-size-input ms"><input type="number" value={behavior.delay} onChange={(e) => { behavior.delay = e.target.value; onUpdateB(behavior) }} placeholder="" /></div>
-              </div>
           </div>
         </div>
         <div className={`cta-tab ${tab == "styling" ? 'active' : ''}`}>
@@ -269,12 +257,12 @@ class TriggerButtonTab extends Component {
               <div>
                 <div className="cta-icon-input">
                   <label>Icon</label>
-                  <IconsSelect value={data.triggerButtonIcon} onUpdate={this.onIconChoose} />
+                  <IconsSelect value={data.textUsButtonIcon} onUpdate={this.onIconChoose} />
                 </div>
               </div>
               <div>
                 <label>Label</label>
-                <input type="text" value={data.triggerButtonLabel} onChange={(e) => { data.triggerButtonLabel = e.target.value; onUpdate(data) }} placeholder="Text inside the button" />
+                <input type="text" value={data.textUsButtonLabel} onChange={(e) => { data.textUsButtonLabel = e.target.value; onUpdate(data) }} placeholder="Text inside the button" />
               </div>
             </div>
           </div>
@@ -285,25 +273,25 @@ class TriggerButtonTab extends Component {
                 <label>Background</label>
                 <div className="cta-color-input">
                   <div className="color-picker" ref={this.bgColorPickr}></div>
-                  <input type="text" value={data.triggerButtonBackground} onChange={this.onChangeBG} placeholder="None" />
+                  <input type="text" value={data.textUsButtonBackground} onChange={this.onChangeBG} placeholder="None" />
                 </div>
               </div>
               <div>
                 <label>Stroke color</label>
                 <div className="cta-color-input">
                   <div className="color-picker" ref={this.strColorPickr}></div>
-                  <input type="text" value={data.triggerButtonStroke} onChange={this.onChangeStroke} placeholder="None" />
+                  <input type="text" value={data.textUsButtonStroke} onChange={this.onChangeStroke} placeholder="None" />
                 </div>
               </div>
             </div>
             <div className="cta-inline">
               <div>
                 <label>Corner roudness</label>
-                <div className="cta-size-input"><input id="corner" type="number" value={data.triggerButtonCorner} onChange={(e) => { data.triggerButtonCorner = e.target.value; onUpdate(data) }} placeholder="eq: 4" /></div>
+                <div className="cta-size-input"><input id="corner" type="number" value={data.textUsButtonCorner} onChange={(e) => { data.textUsButtonCorner = e.target.value; onUpdate(data) }} placeholder="eq: 4" /></div>
               </div>
               <div>
                 <label>Shadow</label>
-                <ShadowList onUpdate={this.onShadowUpdate} value={data.triggerButtonShadow} />
+                <ShadowList onUpdate={this.onShadowUpdate} value={data.textUsButtonShadow} />
               </div>
             </div>
           </div>
@@ -311,7 +299,7 @@ class TriggerButtonTab extends Component {
             <h2>Label style</h2>
             <label>Font family</label>
             <Select
-              value={{ value: data.triggerButtonFont, label: data.triggerButtonFont }}
+              value={{ value: data.textUsButtonFont, label: data.textUsButtonFont }}
               onChange={this.onFontChange}
               options={fontsList}
               className={"cta-select"}
@@ -322,15 +310,15 @@ class TriggerButtonTab extends Component {
                 <label>Color</label>
                 <div className="cta-color-input">
                   <div className="color-picker" ref={this.colorPickr}></div>
-                  <input type="text" value={data.triggerButtonFontColor} onChange={this.onChangeColor} placeholder="None" />
+                  <input type="text" value={data.textUsButtonFontColor} onChange={this.onChangeColor} placeholder="None" />
                 </div>
               </div>
               <div>
                 <label>Font size</label>
                 <div className="cta-size-input">
                   <input
-                    value={data.triggerButtonFontSize}
-                    onChange={(e) => { data.triggerButtonFontSize = e.target.value; onUpdate(data) }}
+                    value={data.textUsButtonFontSize}
+                    onChange={(e) => { data.textUsButtonFontSize = e.target.value; onUpdate(data) }}
                     type="number"
                     placeholder=""
                   />
@@ -339,22 +327,22 @@ class TriggerButtonTab extends Component {
             </div>
             <div className="cta-inline btn-icons">
               <div>
-                <div data-tip="Align left" className={`cta-btn-icon ${data.triggerButtonAlign == 'left' ? 'active' : ''}`} onClick={() => { data.triggerButtonAlign = "left"; onUpdate(data) }}>
+                <div data-tip="Align left" className={`cta-btn-icon ${data.textUsButtonAlign == 'left' ? 'active' : ''}`} onClick={() => { data.textUsButtonAlign = "left"; onUpdate(data) }}>
                   <i className="icon-text-left"></i>
                 </div>
                 <ReactTooltip place="bottom" className="tolltip-basic" effect="solid" />
-                <div data-tip="Align center" className={`cta-btn-icon ${data.triggerButtonAlign == 'center' ? 'active' : ''}`} onClick={() => { data.triggerButtonAlign = "center"; onUpdate(data) }}>
+                <div data-tip="Align center" className={`cta-btn-icon ${data.textUsButtonAlign == 'center' ? 'active' : ''}`} onClick={() => { data.textUsButtonAlign = "center"; onUpdate(data) }}>
                   <i className="icon-text-center"></i>
                 </div>
-                <div data-tip="Align right" className={`cta-btn-icon ${data.triggerButtonAlign == 'right' ? 'active' : ''}`} onClick={() => { data.triggerButtonAlign = "right"; onUpdate(data) }}>
+                <div data-tip="Align right" className={`cta-btn-icon ${data.textUsButtonAlign == 'right' ? 'active' : ''}`} onClick={() => { data.textUsButtonAlign = "right"; onUpdate(data) }}>
                   <i className="icon-text-right"></i>
                 </div>
               </div>
               <div>
-                <div data-tip="Font weight bold" className={`cta-btn-icon ${data.triggerButtonWeight ? 'active' : ''}`} onClick={() => { data.triggerButtonWeight == "bold" ? data.triggerButtonWeight = "" : data.triggerButtonWeight = "bold"; onUpdate(data) }}>
+                <div data-tip="Font weight bold" className={`cta-btn-icon ${data.textUsButtonWeight ? 'active' : ''}`} onClick={() => { data.textUsButtonWeight == "bold" ? data.textUsButtonWeight = "" : data.textUsButtonWeight = "bold"; onUpdate(data) }}>
                   <i className="icon-bold"></i>
                 </div>
-                <div data-tip="Font style italic" className={`cta-btn-icon ${data.triggerButtonItalic ? 'active' : ''}`} onClick={() => { data.triggerButtonItalic == "italic" ? data.triggerButtonItalic = "" : data.triggerButtonItalic = "italic"; onUpdate(data) }}>
+                <div data-tip="Font style italic" className={`cta-btn-icon ${data.textUsButtonItalic ? 'active' : ''}`} onClick={() => { data.textUsButtonItalic == "italic" ? data.textUsButtonItalic = "" : data.textUsButtonItalic = "italic"; onUpdate(data) }}>
                   <i className="icon-italic"></i>
                 </div>
               </div>
@@ -366,4 +354,4 @@ class TriggerButtonTab extends Component {
   }
 }
 
-export default TriggerButtonTab;
+export default ContactUsButtonTab;

@@ -27,7 +27,7 @@ class CtaViewer extends Component {
 
       let icons = new FontFace('icomoon', 'url(' + data.folder + 'assets/fonts/icomoon.woff?fa3kex)', { fontFamily: 'icomoon', fontWeight: 'normal', fontStyle: 'normal' });
 
-      if(data.mainButtonIcon || data.triggerButtonIcon ) {
+      if(data.mainButtonIcon || data.triggerButtonIcon || data.textUsButtonIcon ) {
         let pack = new FontFace('pack', 'url(' + data.folder + 'assets/fonts/pack.woff?fa3kex)', { fontFamily: 'pack', fontWeight: 'normal', fontStyle: 'normal' });
 
         pack.load().then((loadedFace) => {

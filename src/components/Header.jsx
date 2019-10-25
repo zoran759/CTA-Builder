@@ -27,9 +27,18 @@ class Header extends Component {
   isExportDisabled = () => {
     const { data, layoutName } = this.props;
 
-    if (!data.customPrivacy) if (!data.company || !validateEmail(data.email)) return true;
-    if (data.customPrivacy) if (!validURL(data.terms) || !validURL(data.privacy)) return true;
-    if (layoutName != LAYOUT_NAMES[0]) if (!data.triggerButtonLabel && !data.triggerButtonIcon) return true;
+    if (layoutName == LAYOUT_NAMES[0] || layoutName == LAYOUT_NAMES[1]) {
+      if (!data.customPrivacy) if (!data.company || !validateEmail(data.email)) return true;
+      if (data.customPrivacy) if (!validURL(data.terms) || !validURL(data.privacy)) return true;
+      if (layoutName == LAYOUT_NAMES[1]) if (!data.triggerButtonLabel && !data.triggerButtonIcon) return true;
+    }
+
+    if (layoutName == LAYOUT_NAMES[2]) {
+      if (layoutName == LAYOUT_NAMES[2]) if (!data.textUsButtonLabel && !data.textUsButtonIcon) return true;
+    }
+
+
+    
 
     return false;
 
@@ -39,15 +48,23 @@ class Header extends Component {
     const { data, layoutName } = this.props;
     let error = '';
 
-    if (!data.customPrivacy) {
-      if (!data.company || !validateEmail(data.email)) error += " Legal footnote";
-    }else{
-      if (!validURL(data.terms) || !validURL(data.privacy)) error += " Legal footnote";
+    if (layoutName == LAYOUT_NAMES[0] || layoutName == LAYOUT_NAMES[1]) {
+      if (!data.customPrivacy) {
+        if (!data.company || !validateEmail(data.email)) error += " Legal footnote";
+      }else{
+        if (!validURL(data.terms) || !validURL(data.privacy)) error += " Legal footnote";
+      }
+  
+      if (layoutName != LAYOUT_NAMES[0]) {
+        if (!data.triggerButtonLabel && !data.triggerButtonIcon) error += " Trigger button";
+      }
     }
 
-    if (layoutName != LAYOUT_NAMES[0]) {
-      if (!data.triggerButtonLabel && !data.triggerButtonIcon) error += " Trigger button";
+    if (layoutName == LAYOUT_NAMES[2]) {
+      if (!data.textUsButtonLabel && !data.textUsButtonIcon) error += " Call-to-action button";
     }
+
+
 
     return error;
   }
