@@ -203,7 +203,7 @@ class MainButtonTab extends Component {
             <input type="text" value={data.phone} onChange={(e) => { data.phone = e.target.value; onUpdate(data) }} placeholder="eg: 555888" />
             <label>Prefilled text</label>
             <textarea
-              rows="3"
+              rows="5"
               defaultValue={data.keyword}
               onChange={(e) => { data.keyword = e.target.value; onUpdate(data) }}
               placeholder="Keyword or default message...">

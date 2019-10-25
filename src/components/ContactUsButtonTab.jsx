@@ -213,7 +213,7 @@ class ContactUsButtonTab extends Component {
               <input type="text" value={data.textUsButtonNumber} onChange={(e) => { data.textUsButtonNumber = e.target.value; onUpdate(data) }} placeholder="eg: 555888" />
               <label>Prefilled text</label>
               <textarea
-                rows="3"
+                rows="5"
                 defaultValue={data.textUsButtonText}
                 onChange={(e) => { data.textUsButtonText = e.target.value; onUpdate(data) }}
                 placeholder="Keyword or default message...">

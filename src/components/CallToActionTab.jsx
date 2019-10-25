@@ -81,7 +81,7 @@ class CallToActionTab extends Component {
         <div className="cta-tab active">
           <div className="cta-group bb-0">
             <textarea
-              rows="3"
+              rows="5"
               defaultValue={data.reason}
               onChange={(e) => { data.reason = e.target.value; onUpdate(data) }}
               placeholder="Tell people how and why they should subscribe to your list. E.g. Text PIZZA to 555888 for 50% off your next order.">
