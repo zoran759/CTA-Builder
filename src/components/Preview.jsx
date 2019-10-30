@@ -264,6 +264,7 @@ class Preview extends Component {
                   (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
                 }
               </div>
+              {data.isPowered ? (<div className="cta-content-copyright"><a href="https://www.simpletexting.com" target="_blank">Powered by SimpleTexting.com</a></div>) : ''}
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
               {!isProduction ? <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && (this.ifTriggerAvailable() || this.ifFlyoutAvailable())} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" /> : ''}

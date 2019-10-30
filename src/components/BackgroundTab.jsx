@@ -3,6 +3,7 @@ import Select from 'react-select';
 import Pickr from '@simonwep/pickr';
 import { SWATCHES, PICKR_CONFIG, CLOSE_POSITIONS } from "../defines";
 import ShadowList from "./ShadowList";
+import Switch from "../components/Switch";
 
 class BackgroundTab extends Component {
   constructor(props) {
@@ -113,6 +114,12 @@ class BackgroundTab extends Component {
     return pos;
   }
 
+  onIsPoweredToggle = (e) => {
+    const { data, onUpdate } = this.props;
+    e.target.checked ? data.isPowered = true : data.isPowered = false;
+    onUpdate(data);
+  }
+
   render() {
 
     const { data, onUpdate } = this.props;
@@ -166,6 +173,7 @@ class BackgroundTab extends Component {
                 <ShadowList onUpdate={this.onShadowUpdate} value={data.shadow}/>
               </div>
             </div>
+            <Switch isActive={data.isPowered} onUpdate={this.onIsPoweredToggle} label="Powered By SimpleTexting.com"/>
           </div>
         </div>
       </div>

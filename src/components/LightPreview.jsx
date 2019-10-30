@@ -226,9 +226,10 @@ class LightPreview extends Component {
                 (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Legal footnote not configured.</span></div>
               }
             </div>
+            {data.isPowered ? (<div className="cta-content-copyright"><a href="https://www.simpletexting.com" target="_blank">Powered by SimpleTexting.com</a></div>) : ''}
           </div>
           <div className={`cta-trigger-button-container ${behavior.position}`}>
-            <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
+            <div className={`cta-btn-close cta-dropdown-toggler ${!this.ifTriggerAvailable() ? "d-none" : ''} ${this.ifOnlyImage() ? 'd-none' : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
             <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
             <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
               <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>

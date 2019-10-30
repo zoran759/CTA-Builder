@@ -1,0 +1,54 @@
+.switch {
+  display: block;
+  position: relative;
+  padding-left: 60px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: $color-dark !important;
+
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: $swith-height;
+    width: $swith-width;
+    border-radius: 25px;
+    background-color: $color-light;
+    transition: background-color $transition ease;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: calc(#{$swith-height} - 6px);
+      height: calc(#{$swith-height} - 6px);
+      background-color: $color-white;
+      border-radius: 50%;
+      transition: transform $transition ease;
+    }
+  }
+}
+
+.switch input:checked ~ .checkmark {
+  background-color: $color-primary;
+}
+
+.switch input:checked ~ .checkmark:after {
+  transform: translateX(#{$swith-width - $swith-height}) translateY(-50%);
+}

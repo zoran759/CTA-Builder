@@ -71,7 +71,7 @@ class Design extends Component {
   }
 
   checkPosition = (withTimeout) => {
-    
+
     setTimeout(() => {
       if (this.contentContainer.current && this.designContainer.current) {
         if (this.contentContainer.current.offsetHeight + 200 > this.designContainer.current.offsetHeight) {
@@ -84,12 +84,15 @@ class Design extends Component {
   }
 
   render() {
-    const { isActive, data, behavior, toolTips, isDesign } = this.props;
+    const { isActive, data, behavior, toolTips, isDesign, clearInputs } = this.props;
     const { isStatic } = this.state;
 
     return (
       <div className={`cta-design ${isStatic ? 'static' : ''} ${isActive ? 'active' : ''}`} ref={this.designContainer}>
         <div className="cta-content-container" ref={this.contentContainer}>
+          <div className={`cta-design-clear ${this.ifTriggerButton() ? "d-none" : ''}`} onClick={clearInputs}>
+            <i className="icon-refresh"></i> Clear <span>all input fields</span>
+          </div>
           <div className={`cta-design-edit ${this.ifTriggerButton() ? "d-none" : ''}`} onClick={() => { this.navigateToTab("isBackgroundTab") }}>
             Card styling <i className="icon-card-style"></i>
           </div>
@@ -147,6 +150,7 @@ class Design extends Component {
                 (data.company && data.email) ? this.generateLink() : <div className="cta-legal-toggler"><span>Setup legal footnote</span></div>
               }
             </div>
+            {data.isPowered ? (<div className="cta-content-copyright"><a target="_blank">Powered by SimpleTexting.com</a></div>) : ''}
           </div>
           <div className={`cta-trigger-button-container ${behavior.position}`}>
             <ToolTip isActive={isDesign && toolTips.isTriggerOnlyTooltip && this.ifTriggerButton()} text="Click the button to start editing it" type="middle-trigger" />

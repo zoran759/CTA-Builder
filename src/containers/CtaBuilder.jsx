@@ -20,7 +20,7 @@ import ExportTab from "../components/ExportTab";
 import LightPreview from "../components/LightPreview";
 import { validateEmail, validURL } from '../utils/utils';
 import shortLinks from "../services/shortLinks";
-import { LAYOUT_NAMES, APP_CONFIG } from "../defines";
+import { LAYOUT_NAMES, APP_CONFIG, getInitialData } from "../defines";
 
 class CtaBuilder extends Component {
   constructor(props) {
@@ -72,6 +72,7 @@ class CtaBuilder extends Component {
         delay: 1000,
       },
       data: {
+        isPowered: true,
         folder: window.location.href,
         size: 22,
         color: '#333333',
@@ -322,6 +323,21 @@ class CtaBuilder extends Component {
   };
 
   onLayoutChoose = (layout) => {
+    const {data} = this.state;
+
+    switch (LAYOUT_NAMES[layout]) {
+      case LAYOUT_NAMES[0]:
+          window.history.pushState({},"", data.folder+"#image-only");
+        break;
+      case LAYOUT_NAMES[1]:
+          window.history.pushState({},"", data.folder+"#button-flyout");
+        break;
+      case LAYOUT_NAMES[2]:
+          window.history.pushState({},"", data.folder+"#click-to-text");
+        break;
+      default:
+
+    }
 
     this.setState({ layout: layout, layoutName: LAYOUT_NAMES[layout], isLayoutChoose: false, isMinimal: layout == 2 ? true : false }, () => {
       document.dispatchEvent(this.eventUpdate);
@@ -418,6 +434,14 @@ class CtaBuilder extends Component {
     this.setState({ isSocialShare: false });
   }
 
+  clearInputs = () => {
+    let textareas = document.querySelectorAll("textarea");
+    textareas.forEach((textarea)=>{
+      textarea.value = '';
+    });
+    this.setState({ data: getInitialData() });
+  }
+
   render() {
     const {
       isLayoutChoose,
@@ -457,7 +481,7 @@ class CtaBuilder extends Component {
             isSidebar={isSidebar}
             isDesign={isDesign}
           /> */}
-          <Design setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
+          <Design setTooltip={this.setTooltip} clearInputs={this.clearInputs} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
           <Preview onDontShow={() => { }} onRemindLater={() => { }} setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab

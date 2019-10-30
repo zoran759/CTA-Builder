@@ -7,6 +7,25 @@
   display: none;
   position: relative;
 
+  .cta-design-clear {
+    position: absolute;
+    left: 0;
+    top: -40px;
+    color: $color-dark-gray;
+    transition: color $transition ease;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    i {
+      margin-right: 0.5rem;
+    }
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
   .cta-design-edit {
     position: absolute;
     right: 0;
@@ -486,6 +505,24 @@
       }
     }
 
+    .cta-content-copyright {
+      text-align: center;
+      font-size: 0.8125rem;
+      color: inherit;
+      margin-top: 1rem;
+      margin-bottom: -1rem;
+      color: $color-dark-gray;
+
+      a {
+        font-size: 0.8125rem;
+        color: inherit;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+
     .cta-content-legal {
       cursor: pointer;
       color: $color-dark-gray;
@@ -645,6 +682,12 @@
 
   @media screen and (max-width: $mobile) {
     padding: 0 1rem;
+
+    .cta-design-clear {
+      span{
+        display: none;
+      }
+    }
 
     &.production {
       .cta-content-container {
