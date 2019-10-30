@@ -30,6 +30,8 @@ class CtaBuilder extends Component {
     this.shortT = new shortLinks();
     this.shortP = new shortLinks();
 
+    this.eventUpdate = new Event('updateApp');
+
     this.state = {
       isLayoutChoose: false,
       isMinimal: false,
@@ -175,25 +177,43 @@ class CtaBuilder extends Component {
     this.buildFontList();
     this.events();
     this.setTooltips();
-
     this.onFontchange(this.state.data.font);
+    this.navigate();
 
     setTimeout(() => {
       document.querySelector("#loader").style.display = "none";
     }, 1000)
+  }
 
-    setTimeout(() => {
-      this.setState({ isLayoutChoose: true });
-    }, 2000)
+  navigate = () => {
+    let linkFromUrl = window.location.href.split("#");
+
+    switch (linkFromUrl[linkFromUrl.length - 1]) {
+      case "image-only":
+        this.setState({ layoutName: LAYOUT_NAMES[0] });
+        break;
+      case "button-flyout":
+        this.setState({ layoutName: LAYOUT_NAMES[1] });
+        break;
+      case "click-to-text":
+        this.setState({ layoutName: LAYOUT_NAMES[2] });
+        break;
+      default:
+        setTimeout(() => {
+          this.setState({ isLayoutChoose: true });
+        }, 2000)
+    }
   }
 
   setTooltip = (tooltip) => {
 
     const { toolTips } = this.state;
 
-    localStorage.setItem('cta-builder-' + tooltip, "viewed")
+    if (APP_CONFIG.isTooltipsCanHide) {
+      localStorage.setItem('cta-builder-' + tooltip, "viewed")
 
-    toolTips[tooltip] = false;
+      toolTips[tooltip] = false;
+    }
 
   }
 
@@ -303,7 +323,9 @@ class CtaBuilder extends Component {
 
   onLayoutChoose = (layout) => {
 
-    this.setState({ layout: layout, layoutName: LAYOUT_NAMES[layout], isLayoutChoose: false, isMinimal: layout == 2 ? true : false });
+    this.setState({ layout: layout, layoutName: LAYOUT_NAMES[layout], isLayoutChoose: false, isMinimal: layout == 2 ? true : false }, () => {
+      document.dispatchEvent(this.eventUpdate);
+    });
   }
 
   onViewChange = (is) => {
@@ -322,7 +344,9 @@ class CtaBuilder extends Component {
   }
 
   onUpdate = (data) => {
-    this.setState({ data });
+    this.setState({ data }, () => {
+      document.dispatchEvent(this.eventUpdate);
+    })
   }
 
   onBehaviorUpdate = (behavior) => {
@@ -434,7 +458,7 @@ class CtaBuilder extends Component {
             isDesign={isDesign}
           /> */}
           <Design setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={isDesign} />
-          <Preview onDontShow={()=>{}} onRemindLater={()=>{}} setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
+          <Preview onDontShow={() => { }} onRemindLater={() => { }} setTooltip={this.setTooltip} isDesign={isDesign} behavior={behavior} toolTips={toolTips} layoutName={layoutName} tabs={tabs} onUpdateTabs={this.onUpdateTabs} data={data} isActive={!isDesign} />
           <EditTab onClose={this.onCloseTabs} isActive={tabs.isCallToActionTab} content={
             <CallToActionTab
               data={data}

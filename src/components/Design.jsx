@@ -7,6 +7,25 @@ import { validateEmail, validURL } from '../utils/utils';
 class Design extends Component {
   constructor(props) {
     super(props);
+
+    this.state = { isStatic: false }
+
+    this.contentContainer = React.createRef();
+    this.designContainer = React.createRef();
+  }
+
+  componentDidMount() {
+    this.events();
+    this.checkPosition(3000);
+  }
+
+  events = () => {
+    window.addEventListener("resize", () => {
+      this.checkPosition();
+    });
+    document.addEventListener("updateApp", () => {
+      this.checkPosition(200);
+    });
   }
 
   navigateToTab = (name) => {
@@ -51,12 +70,26 @@ class Design extends Component {
       }));
   }
 
+  checkPosition = (withTimeout) => {
+    
+    setTimeout(() => {
+      if (this.contentContainer.current && this.designContainer.current) {
+        if (this.contentContainer.current.offsetHeight + 200 > this.designContainer.current.offsetHeight) {
+          this.setState({ isStatic: true });
+        } else {
+          this.setState({ isStatic: false });
+        }
+      }
+    }, withTimeout ? withTimeout : 0)
+  }
+
   render() {
     const { isActive, data, behavior, toolTips, isDesign } = this.props;
+    const { isStatic } = this.state;
 
     return (
-      <div className={`cta-design ${isActive ? 'active' : ''}`}>
-        <div className="cta-content-container">
+      <div className={`cta-design ${isStatic ? 'static' : ''} ${isActive ? 'active' : ''}`} ref={this.designContainer}>
+        <div className="cta-content-container" ref={this.contentContainer}>
           <div className={`cta-design-edit ${this.ifTriggerButton() ? "d-none" : ''}`} onClick={() => { this.navigateToTab("isBackgroundTab") }}>
             Card styling <i className="icon-card-style"></i>
           </div>
@@ -151,7 +184,7 @@ class Design extends Component {
                     fontWeight: data.textUsButtonWeight,
                     fontStyle: data.textUsButtonItalic
                   }}>
-                    {(data.textUsButtonLabel || data.textUsButtonIcon) ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Setup click-to-action button</span>}
+                    {(data.textUsButtonLabel || data.textUsButtonIcon) ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Setup click-to-text button</span>}
                   </div>
                 ) : ''
             }

@@ -4,13 +4,15 @@ import Pickr from '@simonwep/pickr';
 import { SWATCHES, PICKR_CONFIG } from "../defines";
 import Counter from "./Counter";
 import ReactTooltip from 'react-tooltip';
+import { validateEmail, validURL } from '../utils/utils';
 
 class ComplianceTab extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      tab: 'settings'
+      tab: 'settings',
+      isValidEmail:true,
     };
 
     this.colorPickr = React.createRef();
@@ -94,9 +96,18 @@ class ComplianceTab extends Component {
     onUpdate(data)
   }
 
+  updateComplianceEmail = (e) => {
+    const { data, onUpdate } = this.props;
+
+    !validateEmail(e.target.value) ? this.setState({isValidEmail:false}) : this.setState({isValidEmail:true});
+
+    data.email = e.target.value;
+    onUpdate(data);
+  }
+
   render() {
 
-    const { tab } = this.state;
+    const { tab, isValidEmail } = this.state;
     const { fontsList, data, onUpdate } = this.props;
 
     return (
@@ -130,7 +141,7 @@ class ComplianceTab extends Component {
               <label>Company name</label>
               <input type="text" value={data.company} onChange={(e) => { data.company = e.target.value; onUpdate(data) }} placeholder="eg: ACME Inc." />
               <label>Compliance email</label>
-              <input type="email" value={data.email} onChange={(e) => { data.email = e.target.value; onUpdate(data) }} placeholder="john.doe@acme.com" />
+              <input type="email" className={`${isValidEmail ? '' : 'cta-error-border'}`} value={data.email} onChange={this.updateComplianceEmail} placeholder="john.doe@acme.com" />
             </div>
             <label className="radiobutton">
               Custom compliance links

@@ -37,9 +37,6 @@ class Header extends Component {
       if (layoutName == LAYOUT_NAMES[2]) if (!data.textUsButtonLabel && !data.textUsButtonIcon) return true;
     }
 
-
-    
-
     return false;
 
   }
@@ -63,8 +60,6 @@ class Header extends Component {
     if (layoutName == LAYOUT_NAMES[2]) {
       if (!data.textUsButtonLabel && !data.textUsButtonIcon) error += " Call-to-action button";
     }
-
-
 
     return error;
   }

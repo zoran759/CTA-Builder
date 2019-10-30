@@ -23,7 +23,7 @@ class FeaturedImageTab extends Component {
     return (
       <div className="cta-tab-content">
         <div className="cta-group-title">
-          <h2>Faetured image</h2>
+          <h2>Featured image</h2>
         </div>
         <div className="cta-tab active">
           <div className="cta-group bb-0">

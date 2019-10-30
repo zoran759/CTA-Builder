@@ -41,7 +41,7 @@
     bottom: -60px;
     width: 100%;
 
-    .tolltip-basic  {
+    .tolltip-basic {
       max-width: 140px;
       text-align: center;
     }
@@ -56,7 +56,7 @@
       text-align: left;
       font-size: 0.8125rem;
 
-      >div {
+      > div {
         height: 2rem;
       }
     }
@@ -77,7 +77,7 @@
       right: -1.2rem;
       z-index: 1;
 
-      i{
+      i {
         font-size: 0.6rem;
       }
     }
@@ -90,7 +90,7 @@
     bottom: -60px;
     width: 100%;
 
-    .tolltip-basic  {
+    .tolltip-basic {
       max-width: 140px;
       text-align: center;
     }
@@ -105,7 +105,7 @@
       text-align: left;
       font-size: 0.8125rem;
 
-      >div {
+      > div {
         height: 2rem;
       }
     }
@@ -126,7 +126,7 @@
       right: -1.2rem;
       z-index: 1;
 
-      i{
+      i {
         font-size: 0.6rem;
       }
     }
@@ -172,18 +172,15 @@
     }
 
     &.cta-label-textonly {
-
-      i{
+      i {
         display: none;
       }
     }
 
     &.cta-label-texticonl {
-
       i {
         margin-left: 0;
       }
-      
     }
 
     &.cta-label-texticonr {
@@ -200,7 +197,7 @@
     }
 
     &:hover {
-      border-color: $color-primary !important;
+      border-color: $color-dark-gray !important;
     }
 
     span {
@@ -210,7 +207,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: $color-primary-active;
+      color: $color-dark-gray;
       text-decoration: underline;
       transition: border $transition ease, color $transition ease, background-color $transition ease;
 
@@ -231,19 +228,30 @@
     border-radius: 50%;
     cursor: pointer;
     transition: color $transition ease;
-  
-    i{
+
+    i {
       transition: color $transition ease;
       color: $color-light-gray;
       display: block !important;
     }
-  
-    &:hover{
+
+    &:hover {
       color: $color-dark;
 
       i {
         color: $color-dark;
       }
+    }
+  }
+
+  &.static {
+    overflow: auto;
+    align-items: flex-start;
+
+    .cta-content-container {
+      margin: 5rem 0;
+      position: static;
+      transform: translateX(0) translateY(0);
     }
   }
 
@@ -285,11 +293,11 @@
       &.cta-position-bc {
         transform: translateX(-50%) translateY(-30px) !important;
       }
-  
+
       &.cta-position-br {
         right: 2rem !important;
       }
-  
+
       &.cta-position-bl {
         left: 2rem !important;
       }
@@ -320,7 +328,7 @@
     z-index: 2;
     transition: opacity $transition ease;
 
-    &.active{
+    &.active {
       opacity: 1;
       pointer-events: all;
     }
@@ -464,6 +472,10 @@
       }
     }
     .cta-content-image {
+      &.center{
+        display: flex;
+        justify-content: center;
+      }
       > div:not(.cta-special-tooltip) {
         min-height: 10vh;
       }
@@ -496,7 +508,7 @@
       }
 
       .cta-legal-toggler {
-        color: $color-primary-active;
+        color: $color-dark-gray;
         text-decoration: underline;
         cursor: pointer;
         font-family: $font-family !important;
@@ -508,14 +520,13 @@
       }
 
       .cta-content-legal-links {
-
-        >div {
+        > div {
           line-height: 150%;
         }
-        
+
         transition: opacity $transition ease;
 
-        &.disabled{
+        &.disabled {
           opacity: 0.5;
           pointer-events: none;
         }
@@ -535,36 +546,40 @@
     }
   }
 
-  &.preview{
+  &.preview {
     .cta-content {
-
       overflow: hidden;
 
-      &.without-logo.with-image{
+      &.without-logo.with-image {
         padding-top: 0;
 
-        .cta-content-image.boxed{
+        .cta-content-image.boxed {
+          display: flex;
           padding-top: $spacer;
+
+          &.center{
+            justify-content: center;
+          }
         }
       }
       .cta-block {
         border: none;
         border-radius: 0;
-        cursor:auto;
+        cursor: auto;
         display: none;
 
         &.filed {
           display: block;
         }
 
-        &:hover{
+        &:hover {
           background-color: transparent;
         }
       }
 
       .cta-content-legal {
         border: none;
-        cursor:auto;
+        cursor: auto;
 
         .cta-legal-toggler {
           text-decoration: none !important;
@@ -574,7 +589,7 @@
         &.filed {
           display: block;
           border-color: transparent;
-  
+
           &:hover {
             background-color: transparent;
             border-color: transparent;
@@ -587,7 +602,7 @@
         color: $color-danger;
         text-decoration: none;
       }
-      &:hover{
+      &:hover {
         border-color: transparent !important;
       }
     }
@@ -633,7 +648,6 @@
 
     &.production {
       .cta-content-container {
-
         .cta-content {
           left: 1rem;
 
@@ -650,7 +664,7 @@
   //box-shadow: none !important;
   transform: scale(1) !important;
 
-  *{
+  * {
     //box-shadow: none !important;
     transform: scale(1) !important;
   }

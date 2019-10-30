@@ -162,15 +162,18 @@
 
   &.top-preview {
     width: 140px;
-    left: 50px;
-    bottom: -60px;
+    left: auto;
+    right: 0;
+    transform: translateX(140%);
+    bottom: 20px;
     text-align: left;
     white-space: initial;
 
     i {
       font-size: 1.3rem;
-      top: -14px;
-      left: -20px;
+      top: -px;
+      left: -30px;
+      transform: scaleY(-1) rotate(-60deg);
     }
   }
 
@@ -197,6 +200,12 @@
     i {
       top: -14px;
       right: -30px;
+    }
+  }
+
+  @media screen and (max-width: $lg) {
+    &.top-header {
+      right: 20px;
     }
   }
 

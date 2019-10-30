@@ -22,6 +22,8 @@ class Preview extends Component {
   componentDidMount() {
     isMounted = true;
     this.events();
+
+    if(this.ifTriggerButton()) this.setState({isDesktop:false});
   }
 
   componentWillUnmount() {
@@ -38,14 +40,19 @@ class Preview extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { isDesign } = this.props;
+    const { isDesign, layoutName } = this.props;
 
     isMounted = true;
+
+    if(layoutName != prevProps.layoutName) {
+      this.ifTriggerButton() ? this.setState({isDesktop:false}) : this.setState({isDesktop:true});
+    }
 
     if (!isDesign == prevProps.isDesign) {
       if (isDesign) {
         this.setState({ isModal: false });
       } else {
+        this.ifTriggerButton() ? this.setState({isDesktop:false}) : this.setState({isDesktop:true});
         this.setState({ isModal: false }, () => {
           this.behaviorInit();
         });
@@ -182,7 +189,7 @@ class Preview extends Component {
         {!isProduction ? (
           <>
             <div className={`cta-screen-toggler ${this.ifOnlyImage() ? "d-none" : ''}`}>
-              <i className={`icon-desktop ${isDesktop ? "active" : ''}`} onClick={this.onDesktop}></i>
+              <i className={`icon-desktop ${isDesktop ? "active" : ''} ${this.ifTriggerButton() ? "d-none" : ''}`} onClick={this.onDesktop}></i>
               <i className={`icon-mobile ${!isDesktop ? "active" : ''}`} onClick={this.onPhone}></i>
             </div>
             <div className={`cta-screen-imitation-outer ${!this.ifOnlyImage() ? isDesktop ? "desktop" : "phone" : ''}`}><span className="cta-screen-not-real">device preview not at real scale</span></div>
@@ -211,7 +218,7 @@ class Preview extends Component {
             >
               <div className={`cta-content-close ${this.ifOnlyImage() ? "d-none" : ''} ${data.closePosition}`} onClick={this.onClose}><i className="icon-close"></i></div>
               <div className={`cta-block cta-content-logo ${data.logo && data.logo != "http://" && data.logo != "https://" ? "filed" : ''} ${data.logoAlign} ${data.logoStyle}`}>
-                {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank" href={data.hyperlink ? data.hyperlink : "#"}><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
+                {data.logo && data.logo != "http://" && data.logo != "https://" ? <a target="_blank" {... data.hyperlink && (data.hyperlink != "https://") && (data.hyperlink != "http://") ? {href: data.hyperlink} : {}}><img style={{ width: data.logoMaxWidth + "px" }} src={data.logo} /></a> : <div><div>Logo <span className="cta-optional">(optional)</span></div></div>}
               </div>
               <div className={`cta-blocks ${data.imageAlign} ${data.imageStyle}`}>
                 <div className={`cta-block cta-content-image ${data.image && data.image != "http://" && data.image != "https://" ? "filed" : ''} ${data.imageAlign} ${data.imageStyle}`}>
@@ -260,7 +267,7 @@ class Preview extends Component {
             </div>
             <div className={`cta-trigger-button-container ${behavior.position}`}>
               {!isProduction ? <ToolTip isActive={!isDesign && toolTips.isTriggerButtonTooltip && (this.ifTriggerAvailable() || this.ifFlyoutAvailable())} text="Click the trigger button to open the call to action you’ve designed" type="bottom-trigger" /> : ''}
-              <div className={`cta-btn-close cta-dropdown-toggler ${(!this.ifTriggerAvailable() && !this.ifFlyoutAvailable()) ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
+              <div className={`cta-btn-close cta-dropdown-toggler ${(!this.ifTriggerAvailable() && !this.ifFlyoutAvailable()) ? "d-none" : ''} ${this.ifOnlyImage() ? "d-none" : ''}`} onClick={this.onCloseTriger}><i className="icon-close"></i></div>
               <ReactTooltip id='dropdown' place="left" className="tolltip-basic" effect="solid" />
               <DropDown isOpen={isOpenDropDown} onClose={this.onCloseNot}>
                 <div className="cta-btn-close" onClick={this.onCloseNotification}><i className="icon-close"></i></div>
@@ -305,7 +312,7 @@ class Preview extends Component {
                         fontWeight: data.textUsButtonWeight,
                         fontStyle: data.textUsButtonItalic
                       }}>
-                      {this.ifTriggerAvailable() ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Click-to-action button not configured</span>}
+                      {this.ifTriggerAvailable() ? data.textUsButtonIcon ? <><i className={data.textUsButtonIcon}></i>{data.textUsButtonLabel}</> : <>{data.textUsButtonLabel}</> : <span>Click-to-text button not configured</span>}
                     </a>
                   ) : ''
               }

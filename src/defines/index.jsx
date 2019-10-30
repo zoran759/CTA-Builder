@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 export const APP_CONFIG = {
   isFullFontsList: false,
+  isTooltipsCanHide: false,
   fonts:[
     {value: "Alegreya", label: "Alegreya"},
     {value: "BioRhyme", label: "BioRhyme"},

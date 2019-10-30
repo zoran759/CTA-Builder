@@ -89,6 +89,10 @@ body {
   display: none !important;
 }
 
+.cta-error-border {
+  border-color: $color-danger !important;
+}
+
 @media screen and (max-width:560px) {
   .show-mobile {
     display: block !important;

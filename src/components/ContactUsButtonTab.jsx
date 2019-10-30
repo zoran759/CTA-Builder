@@ -200,13 +200,36 @@ class ContactUsButtonTab extends Component {
     return (
       <div className="cta-tab-content">
         <div className="cta-group-title">
-          <h2>Trigger button</h2>
+          <h2>Click-to-text button</h2>
           <div className="cta-links in-tab">
             <div className={`cta-link ${tab == "settings" ? 'active' : ''}`} onClick={() => { this.onTabChange("settings") }}>Settings</div>
             <div className={`cta-link ${tab == "styling" ? 'active' : ''}`} onClick={() => { this.onTabChange("styling") }}>Styling</div>
           </div>
         </div>
         <div className={`cta-tab ${tab == "settings" ? 'active' : ''}`}>
+        <div className="cta-group">
+            <label>Type</label>
+            <Select
+              value={this.getTypeValue()}
+              onChange={this.onTypeChange}
+              options={BUTTONS_TYPES}
+              className={"cta-select"}
+              classNamePrefix={"cta-select"}
+              components={{ SingleValue: customSingleValue, Option: customOptionValue }}
+            />
+            <div className="cta-inline for-icon-input">
+              <div>
+                <div className="cta-icon-input">
+                  <label>Icon</label>
+                  <IconsSelect value={data.textUsButtonIcon} onUpdate={this.onIconChoose} />
+                </div>
+              </div>
+              <div>
+                <label>Label</label>
+                <input type="text" value={data.textUsButtonLabel} onChange={(e) => { data.textUsButtonLabel = e.target.value; onUpdate(data) }} placeholder="Text inside the button" />
+              </div>
+            </div>
+          </div>
           <div className="cta-group bb-0">
             <div>
               <label>Number to send text</label>
@@ -243,29 +266,6 @@ class ContactUsButtonTab extends Component {
           </div>
         </div>
         <div className={`cta-tab ${tab == "styling" ? 'active' : ''}`}>
-          <div className="cta-group">
-            <label>Type</label>
-            <Select
-              value={this.getTypeValue()}
-              onChange={this.onTypeChange}
-              options={BUTTONS_TYPES}
-              className={"cta-select"}
-              classNamePrefix={"cta-select"}
-              components={{ SingleValue: customSingleValue, Option: customOptionValue }}
-            />
-            <div className="cta-inline for-icon-input">
-              <div>
-                <div className="cta-icon-input">
-                  <label>Icon</label>
-                  <IconsSelect value={data.textUsButtonIcon} onUpdate={this.onIconChoose} />
-                </div>
-              </div>
-              <div>
-                <label>Label</label>
-                <input type="text" value={data.textUsButtonLabel} onChange={(e) => { data.textUsButtonLabel = e.target.value; onUpdate(data) }} placeholder="Text inside the button" />
-              </div>
-            </div>
-          </div>
           <div className="cta-group">
             <h2>Button background</h2>
             <div className="cta-inline">
