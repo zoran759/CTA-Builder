@@ -28,7 +28,7 @@
   "dependencies": {
     "@simonwep/pickr": "^1.4.2",
     "html-to-image": "^0.1.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hot-loader": "^4.12.15",
